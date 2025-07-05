@@ -12,28 +12,30 @@ const NavBar = () => {
   return (
     <header>
       <div className="header-container">
-        <div class="logo">
+        <div className="logo">
           <h2>hello</h2>
         </div>
-        <nav class="nav">
+        <nav className="nav">
           <ul className={showMenu ? "show" : ""}>
             <li>
-              <a href="#">Dashboard</a>
+              <NavLink to="/" end>
+                Dashboard
+              </NavLink>
             </li>
             <li>
-              <a href="#">Clases</a>
+              <NavLink to="/clases">Clases</NavLink>
             </li>
             <li>
-              <a href="#">Alumnos</a>
+              <NavLink to="/alumnos">Alumnos</NavLink>
             </li>
             <li>
-              <a href="#">Profesores</a>
+              <NavLink to="/profesores">Profesores</NavLink>
             </li>
             <li>
-              <a href="#">Pagos</a>
+              <NavLink to="/pagos">Pagos</NavLink>
             </li>
           </ul>
-          <div class="hamburger" onClick={handleHamburgerClick}>
+          <div className="hamburger" onClick={handleHamburgerClick}>
             <span></span>
             <span></span>
             <span></span>
