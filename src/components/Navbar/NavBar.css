@@ -24,6 +24,7 @@ h2 {
   margin: 0;
   padding: 0;
   display: flex;
+  background-color: rgb(23,23 ,23 );
   }
 
 .nav li {
@@ -64,12 +65,19 @@ h2 {
     position: absolute;
     top: 60px;
     left: 0;
-    background-color: #333;
     width: 100%;
     padding: 1rem;
+  }
+  .nav li{
+    margin-top: 15px;
   }
  .hamburger {
     display: block;
   }
+  
+  .nav ul.show {
+    display: flex;
+  }
+
 }
 

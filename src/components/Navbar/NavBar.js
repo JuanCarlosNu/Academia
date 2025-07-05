@@ -3,6 +3,12 @@ import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handleHamburgerClick = () => {
+    setShowMenu(!showMenu);
+  };
+
   return (
     <header>
       <div className="header-container">
@@ -10,7 +16,7 @@ const NavBar = () => {
           <h2>hello</h2>
         </div>
         <nav class="nav">
-          <ul>
+          <ul className={showMenu ? "show" : ""}>
             <li>
               <a href="#">DashBoard</a>
             </li>
@@ -27,7 +33,7 @@ const NavBar = () => {
               <a href="#">Pagos</a>
             </li>
           </ul>
-          <div class="hamburger">
+          <div class="hamburger" onClick={handleHamburgerClick}>
             <span></span>
             <span></span>
             <span></span>
