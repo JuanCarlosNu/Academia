@@ -40,10 +40,6 @@ h2 {
   border-radius: 10px;
 }
 
-.nav a:hover {
-  background-color: rgb(245,245,245);
-  color:black;
-}
 
 .nav a.active {
   background-color: white;
