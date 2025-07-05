@@ -57,3 +57,19 @@ h2 {
   margin-bottom: 5px;
 }
 
+@media (max-width: 768px) {
+  .nav ul {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background-color: #333;
+    width: 100%;
+    padding: 1rem;
+  }
+ .hamburger {
+    display: block;
+  }
+}
+
