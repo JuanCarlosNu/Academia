@@ -45,6 +45,11 @@ h2 {
   color:black;
 }
 
+.nav a.active {
+  background-color: white;
+  color: black;
+}
+
 .hamburger {
   display: none;
   cursor: pointer;
