@@ -27,6 +27,11 @@ const NavBar = () => {
               <a href="#">Pagos</a>
             </li>
           </ul>
+          <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </nav>
       </div>
     </header>
