@@ -1,0 +1,28 @@
+.stat-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+}
+
+.stat-total {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.stat-detail {
+  color: gray;
+  font-size: 14px;
+}
