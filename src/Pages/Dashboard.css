@@ -8,6 +8,14 @@
   margin-bottom: 2rem;
 }
 
+  .section-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+
+
 @media (min-width: 768px) {
   /* md:grid-cols-2 */
   .stat-grid {
@@ -19,5 +27,8 @@
   /* lg:grid-cols-4 */
   .stat-grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+   .section-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

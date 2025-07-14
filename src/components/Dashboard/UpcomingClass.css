@@ -1,0 +1,40 @@
+
+.box {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.box-header {
+  padding: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid #eee;
+}
+
+.box-content {
+  padding: 1.5rem;
+  padding-top: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem 0;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.subtext {
+  font-size: 0.875rem;
+  color: #777;
+}
+
+.text-right {
+  text-align: right;
+}

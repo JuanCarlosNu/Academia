@@ -1,6 +1,8 @@
 import React from "react";
 import StatCard from "../Components/Dashboard/StatCard";
 import "./Dashboard.css";
+import UpcomingClass from "../Components/Dashboard/UpcomingClass";
+import FewClassesLeft from "../Components/Dashboard/FewClassesLeft";
 
 function DashBoard() {
   return (
@@ -99,6 +101,10 @@ function DashBoard() {
             </svg>
           }
         />
+      </div>
+      <div className="section-grid">
+        <UpcomingClass />
+        <FewClassesLeft />
       </div>
     </div>
   );
