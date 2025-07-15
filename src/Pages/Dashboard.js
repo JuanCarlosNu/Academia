@@ -1,8 +1,9 @@
 import React from "react";
-import StatCard from "../Components/Dashboard/StatCard";
 import "./Dashboard.css";
-import UpcomingClass from "../Components/Dashboard/UpcomingClass";
-import FewClassesLeft from "../Components/Dashboard/FewClassesLeft";
+
+import StatCard from "../Components/StatCard/StatCard";
+import FewClassesLeft from "../Components/FewClassesLeft/FewClassesLeft";
+import UpcomingClass from "../Components/UpcomingClass/UpcomingClass";
 
 function DashBoard() {
   return (

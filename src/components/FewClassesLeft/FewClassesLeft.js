@@ -1,6 +1,6 @@
 // src/components/FewClassesLeft.js
 import React from "react";
-import "./UpcomingClass.css"; // Reutilizamos el mismo CSS
+import "../UpcomingBoxes.css"; // Reutilizamos el mismo CSS
 
 function FewClassesLeft() {
   const data = [

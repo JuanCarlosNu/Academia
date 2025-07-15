@@ -1,6 +1,6 @@
 // src/components/UpcomingClass.js
 import React from "react";
-import "./UpcomingClass.css";
+import "../UpcomingBoxes.css";
 
 function UpcomingClass() {
   const data = [
