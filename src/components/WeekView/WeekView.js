@@ -12,10 +12,10 @@ function WeekView({ week, onSelectDay }) {
           onClick={() => onSelectDay(dayObj.date)}
         >
           <div className="day-header">
-            {dayObj.date.getDate()}
             <span>
               {dayObj.date.toLocaleDateString("es-AR", { weekday: "short" })}
             </span>
+            <span>{dayObj.date.getDate()}</span>
           </div>
 
           {dayObj.classes.length ? (

@@ -18,9 +18,17 @@
 }
 
 .day-header {
+  display: flex;
+  flex-direction: column;
+ justify-content: center;
+    align-items: center;
+    gap: .2rem;
   font-weight: 600;
   margin-bottom: .5rem;
+  background-color: rgb(245, 245, 245);
 }
+
+
 
 /* layout dentro de cada clase mini */
 .mini-row {
