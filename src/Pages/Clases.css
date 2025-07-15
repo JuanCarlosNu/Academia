@@ -1,0 +1,42 @@
+/* src/pages/Clases.css */
+
+.clases-container {
+  padding: 2rem;
+}
+
+.clases-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.clases-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.view-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.view-button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-button.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.view-button:hover {
+  background-color: #eee;
+}
