@@ -1,0 +1,32 @@
+/* src/components/DateHeader.css */
+.date-header {
+  background: rgb(245,245,245);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.date-header-top {
+  text-align: right;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.date-header-bottom {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  padding: .4rem 1rem;
+  border: 1px solid #000;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.action-btn.cancel {
+  border-color: #d00;
+  color: #d00;
+}
