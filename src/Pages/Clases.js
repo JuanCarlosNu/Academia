@@ -8,6 +8,7 @@ import WeekView from "../Components/WeekView/WeekView";
 function Clases() {
   const [activeRange, setActiveRange] = useState("día");
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [classesOfDay, setClassesOfDay] = useState([]);
 
   const dummyDay = [
     { id: 1, student: "María", circuit: "Circuito 2", time: "14:30" },
@@ -16,13 +17,15 @@ function Clases() {
 
   const dummyWeek = getDummyWeek(currentDate);
 
-  const handleSelectDay = (date) => {
-    setCurrentDate(date);
+  const handleSelectDay = (dayObj) => {
+    setCurrentDate(dayObj.date);
+    setClassesOfDay(dayObj.classes);
     setActiveRange("día");
   };
 
   const goToday = () => {
     setCurrentDate(new Date());
+    setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
 
@@ -52,7 +55,7 @@ function Clases() {
       />
 
       {/* Contenido dinámico */}
-      {activeRange === "día" && <DayView classes={dummyDay} />}
+      {activeRange === "día" && <DayView classes={classesOfDay} />}
       {activeRange === "semana" && (
         <WeekView week={dummyWeek} onSelectDay={handleSelectDay} />
       )}

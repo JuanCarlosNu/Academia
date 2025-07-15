@@ -9,7 +9,7 @@ function WeekView({ week, onSelectDay }) {
         <div
           key={dayObj.date}
           className="day-col"
-          onClick={() => onSelectDay(dayObj.date)}
+          onClick={() => onSelectDay(dayObj)}
         >
           <div className="day-header">
             <span>
