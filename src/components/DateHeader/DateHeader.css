@@ -7,10 +7,11 @@
   gap: .5rem;
 }
 
-.date-header-top {
-  text-align: right;
+.date-shown {
+  text-align: left;
   font-weight: 600;
   text-transform: capitalize;
+  margin-bottom: 20px;
 }
 
 .date-header-bottom {

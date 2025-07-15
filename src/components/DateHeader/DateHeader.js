@@ -11,8 +11,8 @@ function DateHeader({ currentDate, onToday, onCancel }) {
   });
 
   return (
-    <div className="date-header">
-      <div className="date-header-top">{longDate}</div>
+    <div className="date-shown">
+      <h2 className="date-header-top">{longDate}</h2>
 
       <div className="date-header-bottom">
         <button className="action-btn" onClick={onToday}>
