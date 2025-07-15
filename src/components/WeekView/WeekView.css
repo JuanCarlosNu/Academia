@@ -1,0 +1,40 @@
+/* src/components/WeekView.css */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.day-col {
+  padding: .5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.day-col:hover {
+  background: #000;
+  color: #fff;
+}
+
+.day-header {
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
+
+/* layout dentro de cada clase mini */
+.mini-row {
+  border-top: 1px solid #eee;
+  padding-top: .4rem;
+  margin-top: .4rem;
+  font-size: .8rem;
+}
+
+.mini-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mini-student { font-size: .75rem; }
+
+.no-class { font-size: .75rem; color:#777; }
