@@ -1,10 +1,12 @@
 import express from 'express';
 import authRoutes from './routes/authRoutes';
 import { authenticateToken, authorizeRoles } from './middleware/authMiddleware';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+app.use(cors());
 app.use(express.json());
 
 // Rutas de autenticación

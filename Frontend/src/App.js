@@ -6,17 +6,55 @@ import Clases from "./Pages/Clases";
 import Alumnos from "./Pages/Alumnos";
 import Profesores from "./Pages/Profesores";
 import Pagos from "./Pages/Pagos";
+import Login from "./Pages/Login";
+import PrivateRoute from "./Components/PrivateRoute";
 
 function App() {
   return (
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<DashBoard />} />
-        <Route path="/clases" element={<Clases />} />
-        <Route path="/alumnos" element={<Alumnos />} />
-        <Route path="/profesores" element={<Profesores />} />
-        <Route path="/pagos" element={<Pagos />} />
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/DashBoard"
+          element={
+            <PrivateRoute>
+              <DashBoard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clases"
+          element={
+            <PrivateRoute>
+              <Clases />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/alumnos"
+          element={
+            <PrivateRoute>
+              <Alumnos />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profesores"
+          element={
+            <PrivateRoute>
+              <Profesores />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pagos"
+          element={
+            <PrivateRoute>
+              <Pagos />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

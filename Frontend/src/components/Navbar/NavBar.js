@@ -18,7 +18,7 @@ const NavBar = () => {
         <nav className="nav">
           <ul className={showMenu ? "show" : ""}>
             <li>
-              <NavLink to="/" end>
+              <NavLink to="/Dashboard" end>
                 Dashboard
               </NavLink>
             </li>
