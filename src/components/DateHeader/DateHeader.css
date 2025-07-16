@@ -31,3 +31,10 @@
   border-color: #d00;
   color: #d00;
 }
+.nav-arrow{
+  background:transparent;
+  border:none;
+  font-size:1.5rem;
+  cursor:pointer;
+  margin:0 .8rem;
+}

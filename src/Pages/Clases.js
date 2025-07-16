@@ -4,6 +4,7 @@ import "./Clases.css";
 import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
+import { getWeekRange } from "../Utils/dateUtils";
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("día");
@@ -17,23 +18,43 @@ function Clases() {
 
   const dummyWeek = getDummyWeek(currentDate);
 
+  /* ★ botón día de la semana desde WeekView */
   const handleSelectDay = (dayObj) => {
     setCurrentDate(dayObj.date);
     setClassesOfDay(dayObj.classes);
     setActiveRange("día");
   };
 
+  /* ★ “Hoy” */
   const goToday = () => {
     setCurrentDate(new Date());
     setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
+  /* ★ navegar semana */
+
+  const goPrevWeek = () => {
+    const { start } = getWeekRange(currentDate);
+    const prev = new Date(start);
+    prev.setDate(start.getDate() - 7);
+    setCurrentDate(prev);
+  };
+
+  const goNextWeek = () => {
+    const { start } = getWeekRange(currentDate);
+    const next = new Date(start);
+    next.setDate(start.getDate() + 7);
+    setCurrentDate(next);
+  };
+  /* ★ título variable */
+  const titleLabel =
+    activeRange === "semana" ? "Semana de:" : "Clases del día:";
 
   return (
     <div className="clases-container">
       {/* Encabezado 1 */}
       <div className="clases-header">
-        <h2 className="clases-title">Clases del día:</h2>
+        <h2 className="clases-title">{titleLabel}</h2>
         <div className="view-buttons">
           {["día", "semana", "mes"].map((view) => (
             <button
@@ -48,8 +69,12 @@ function Clases() {
       </div>
 
       {/* Encabezado 2 */}
+
       <DateHeader
         currentDate={currentDate}
+        activeRange={activeRange}
+        onPrev={goPrevWeek}
+        onNext={goNextWeek}
         onToday={goToday}
         onCancel={() => alert("Función cancelar")}
       />

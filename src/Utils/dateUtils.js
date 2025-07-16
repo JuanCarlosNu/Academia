@@ -5,7 +5,7 @@ export function getWeekRange(date) {
   end.setDate(start.getDate() + 6); // sábado
   return { start, end };
 }
-export function formatDate(d) {
+export function formatShort(d) {
   const options = { year: "numeric", month: "short", day: "numeric" };
   return d.toLocaleDateString("es-ES", options);
 }
