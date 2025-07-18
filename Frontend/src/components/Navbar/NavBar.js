@@ -1,12 +1,19 @@
 import React, { useState } from "react";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const handleHamburgerClick = () => {
     setShowMenu(!showMenu);
+  };
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    navigate("/login");
   };
 
   return (
@@ -33,6 +40,11 @@ const NavBar = () => {
             </li>
             <li>
               <NavLink to="/pagos">Pagos</NavLink>
+            </li>
+            <li>
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
             </li>
           </ul>
           <div className="hamburger" onClick={handleHamburgerClick}>

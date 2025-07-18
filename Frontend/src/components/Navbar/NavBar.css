@@ -39,6 +39,18 @@ h2 {
   padding: 8px 16px;
   border-radius: 10px;
 }
+.logout-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+.logout-btn:hover {
+  text-decoration: underline;
+}
 
 
 .nav a.active {
@@ -57,6 +69,10 @@ h2 {
   height: 3px;
   background-color: #fff;
   margin-bottom: 5px;
+}
+.cruz {
+  font-size: 20px;
+  
 }
 
 @media (max-width: 768px) {

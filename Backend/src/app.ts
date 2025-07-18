@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Rutas de autenticación
+
 app.use('/api', authRoutes);
 
 app.get('/', (req, res) => {

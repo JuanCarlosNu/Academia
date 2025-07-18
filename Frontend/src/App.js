@@ -14,7 +14,7 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/DashBoard"
           element={
@@ -23,6 +23,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/clases"
           element={
