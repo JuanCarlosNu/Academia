@@ -2,9 +2,17 @@ import express from 'express';
 import authRoutes from './routes/authRoutes';
 import { authenticateToken, authorizeRoles } from './middleware/authMiddleware';
 import cors from 'cors';
+import mongoose from 'mongoose';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Reemplaza con tu URI de MongoDB (local o Atlas)
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/academia';
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('Conectado a MongoDB'))
+  .catch(err => console.error('Error de conexión a MongoDB:', err));
 
 app.use(cors());
 app.use(express.json());
