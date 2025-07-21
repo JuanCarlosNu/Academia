@@ -2,6 +2,7 @@ import { User } from '../models/user';
 import bcrypt from 'bcrypt';
 
 // Contraseñas hasheadas para ejemplo
+
 const adminPassword = bcrypt.hashSync('admin123', 10);
 const profesorPassword = bcrypt.hashSync('profesor123', 10);
 
