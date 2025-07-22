@@ -37,6 +37,7 @@ class AuthController {
   }
 
   static async login(req: Request, res: Response) {
+
     const { username, password } = req.body;
 
     try {
@@ -44,7 +45,6 @@ class AuthController {
       if (!user) {
         return res.status(401).json({ error: 'Usuario o contraseña incorrectos.' });
       }
-
       const valid = await bcrypt.compare(password, user.passwordHash);
       if (!valid) {
         return res.status(401).json({ error: 'Usuario o contraseña incorrectos.' });
@@ -60,7 +60,8 @@ class AuthController {
         token,
         usuario: { id_usuario: user._id, username: user.username, rol: user.role },
       });
-    } catch (error) {
+    } 
+        catch (error) {
       console.error('Error en login:', error);
       res.status(500).json({ error: 'Error en el servidor' });
     }
