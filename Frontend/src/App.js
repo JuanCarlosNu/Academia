@@ -8,6 +8,7 @@ import Profesores from "./Pages/Profesores";
 import Pagos from "./Pages/Pagos";
 import Login from "./Pages/Login";
 import PrivateRoute from "./Components/PrivateRoute";
+import Signup from "./Pages/Signup";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route
           path="/DashBoard"
           element={

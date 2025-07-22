@@ -1,4 +1,4 @@
-.login-page  {
+.signup-page  {
   max-width: 350px;
   margin: 60px auto;
   padding: 32px 24px;
@@ -9,26 +9,23 @@
 }
 
 
-.login-page h1 {
+.signup-page h1 {
   text-align: center;
   margin-bottom: 24px;
   color: #1976d2;
 }
 
-
-
-.login-page form > div {
+.signup-page form > div {
   margin-bottom: 18px;
 }
 
-
-.login-page label {
+.signup-page label {
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
 }
 
-.login-page input {
+.signup-page input {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid #bdbdbd;
@@ -37,12 +34,12 @@
   transition: border 0.2s;
 }
 
-.login-page input:focus {
+.signup-page input:focus {
   border: 1.5px solid #1976d2;
   outline: none;
 }
 
-.login-page button {
+.signup-page button {
   width: 100%;
   padding: 10px 0;
   background: #1976d2;
@@ -55,11 +52,11 @@
   transition: background 0.2s;
 }
 
-.login-page button:hover {
+.signup-page button:hover {
   background: #1565c0;
 }
 
-.login-page [style] {
+.signup-page [style] {
   margin-top: 10px;
   text-align: center;
 }

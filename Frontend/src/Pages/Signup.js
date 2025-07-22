@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "./Signup.css";
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     setError("");
     try {
-      const response = await fetch("http://localhost:3001/api/login", {
+      const response = await fetch("http://localhost:3001/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -21,10 +21,9 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        // Redirige al dashboard o página principal
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       } else {
-        setError(data.error || "Error al iniciar sesión");
+        setError(data.error || "Error al registrarse");
       }
     } catch (err) {
       setError("Error de conexión con el servidor");
@@ -32,8 +31,8 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <h1>Iniciar Sesión</h1>
+    <div className="signup-page">
+      <h1>Crear cuenta</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Usuario:</label>
@@ -54,14 +53,14 @@ const Login = () => {
           />
         </div>
         {error && <div style={{ color: "red" }}>{error}</div>}
-        <button type="submit">Entrar</button>
+        <button type="submit">Registrarse</button>
       </form>
       <p>
-        ¿No tienes cuenta?        {" "}
-        <button onClick={() => navigate("/signup")}>Registrarse</button>     {" "}
+        ¿Ya tenés cuenta?
+        <button onClick={() => navigate("/login")}>Iniciar sesión</button>
       </p>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
