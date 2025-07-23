@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "Frontend/package.json",
-      "use": "@vercel/react"
+      "use": "npm"
     }
   ],
   "routes": [
@@ -12,3 +12,4 @@
     }
   ]
 }
+
