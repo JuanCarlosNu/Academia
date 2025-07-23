@@ -1,10 +1,4 @@
 {
-  "projects": {
-    "frontend": {
-      "buildCommand": "npm run build",
-      "outputDirectory": "build"
-    }
-  },
   "builds": [
     {
       "src": "frontend/package.json",
@@ -12,6 +6,9 @@
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "frontend/$1" }
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
   ]
 }
