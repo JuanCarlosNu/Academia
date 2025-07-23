@@ -7,8 +7,8 @@ import Alumnos from "./Pages/Alumnos";
 import Profesores from "./Pages/Profesores";
 import Pagos from "./Pages/Pagos";
 import Login from "./Pages/Login";
-import PrivateRoute from "./Components/PrivateRoute";
 import Signup from "./Pages/Signup";
+import PrivateRoute from "./Components/PrivateRoute";
 
 function App() {
   return (
