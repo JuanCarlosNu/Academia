@@ -3,6 +3,15 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
+/*
+Que falle si falla la variable de entorno JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error('JWT_SECRET no está definido en las variables de entorno.');
+que expire en 1 hora
+jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+*/
+
+
 export interface AuthenticatedRequest extends Request {
   user?: any;
 }
