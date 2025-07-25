@@ -3,9 +3,14 @@ import authRoutes from './routes/authRoutes';
 import { authenticateToken, authorizeRoles } from './middleware/authMiddleware';
 import cors from 'cors';
 import mongoose from 'mongoose';
- import dotenv from 'dotenv';
+import dotenv from 'dotenv';
+import clasesRoutes from './routes/clases';
+import profesorRoutes from './routes/profesorRoutes';
+import alumnoRoutes from './routes/alumnoRoutes';
+import circuitoRoutes from './routes/circuitoRoutes';
 
 dotenv.config();
+
 // Inicializar la aplicación Express
 
 const app = express();  
@@ -26,6 +31,16 @@ app.use(express.json());
 
 app.use('/api', authRoutes);
 
+// Rutas de la API 
+
+app.use('/api/clases', clasesRoutes);
+app.use('/api/profesores', profesorRoutes);
+app.use('/api/alumnos', alumnoRoutes);
+app.use('/api/circuitos', circuitoRoutes);
+
+
+
+
 app.get('/', (req, res) => {
   res.send('API de Academia funcionando');
 });
@@ -34,6 +49,8 @@ app.get('/', (req, res) => {
 app.get('/api/admin/dashboard', authenticateToken, authorizeRoles(['admin']), (req, res) => {
   res.json({ message: 'Bienvenido al dashboard de administrador.' });
 });
+
+
 
 // Ruta protegida solo para profesor
 app.get('/api/profesor/clases', authenticateToken, authorizeRoles(['profesor']), (req, res) => {
