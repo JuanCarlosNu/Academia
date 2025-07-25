@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 
 const ClaseSchema = new mongoose.Schema({
   
+  alumno: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Alumno',
+  }],
+  
   profesor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profesor',
@@ -21,10 +26,7 @@ const ClaseSchema = new mongoose.Schema({
     required: true,
   },
     
-    alumno: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Alumno',
-  }],
+    
 }, { timestamps: true });
 
 export default mongoose.model('Clase', ClaseSchema);
