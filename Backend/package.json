@@ -1,14 +1,17 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/app.ts",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon src/app.ts",
+    "build": "tsc",
+    "start": "ts-node src/app.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Juanqui",
   "license": "ISC",
-  "description": "",
+  "description": "Backend para Academia",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
