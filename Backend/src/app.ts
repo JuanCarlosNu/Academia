@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3001;
 
 // Reemplaza con tu URI de MongoDB (local o Atlas)
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/Academia';
+const MONGO_URI = process.env.MONGO_URI!;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
