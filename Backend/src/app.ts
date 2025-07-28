@@ -22,6 +22,7 @@ const FRONTEND_URL =  process.env.FRONTEND_URL || 'http://localhost:3000';
 // URI de MongoDB Atlas
 
 const MONGO_URI = process.env.MONGO_URI!;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
