@@ -22,7 +22,7 @@ class AuthController {
       const newUser = new User({
         username,
         passwordHash,
-        role: role || 'alumno',
+        role: role || 'admin',
       });
 
       await newUser.save();
