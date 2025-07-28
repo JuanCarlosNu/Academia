@@ -13,6 +13,7 @@ class AuthController {
 
     try {
       const existingUser = await User.findOne({ username });
+
       if (existingUser) {
         return res.status(400).json({ error: 'El usuario ya existe' });
       }
@@ -33,12 +34,12 @@ class AuthController {
         token,
         usuario: { id_usuario: newUser._id, username: newUser.username, rol: newUser.role },
         });
- });
-    } catch (error) {
+    }
+     catch (error) {
       console.error('Error en signup:', error);
       res.status(500).json({ error: 'Error en el servidor' });
     }
-  }
+  };
 
   static async login(req: Request, res: Response) {
 
@@ -69,8 +70,8 @@ class AuthController {
       console.error('Error en login:', error);
       res.status(500).json({ error: 'Error en el servidor' });
     }
-  }
-}
+  };
+};
 
 
 export default AuthController;
