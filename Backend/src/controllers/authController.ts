@@ -31,7 +31,8 @@ class AuthController {
 
       res.status(201).json({ 
         token,
-        usuario: {id_usuario, username, role}});
+        usuario: { id_usuario: newUser._id, username: newUser.username, rol: newUser.role },
+        });
  });
     } catch (error) {
       console.error('Error en signup:', error);
