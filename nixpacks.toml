@@ -1,0 +1,4 @@
+providers = ["node"]
+
+[start]
+cmd = "node dist/app.js"
