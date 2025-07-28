@@ -21,7 +21,9 @@ const Signup = () => {
         }
       );
       const data = await response.json();
+      console.log("Usuario registrado:", data);
       if (response.ok) {
+        console.log("Registro exitoso:", data);
         localStorage.setItem("token", data.token);
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
         navigate("/dashboard");
