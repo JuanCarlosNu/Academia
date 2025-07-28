@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Profesor from './models/Profesor'; // suponiendo que ya lo tenés definido
+import Profesor from './models/profesor'; // suponiendo que ya lo tenés definido
 
 dotenv.config();
 mongoose.connect(process.env.MONGO_URI!)
