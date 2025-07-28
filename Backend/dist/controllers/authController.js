@@ -19,17 +19,21 @@ class AuthController {
             const newUser = new user_1.default({
                 username,
                 passwordHash,
-                role: role || 'alumno',
+                role: role || 'admin',
             });
             await newUser.save();
             const token = jsonwebtoken_1.default.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET);
-            res.status(201).json({ token });
+            res.status(201).json({
+                token,
+                usuario: { id_usuario: newUser._id, username: newUser.username, rol: newUser.role },
+            });
         }
         catch (error) {
             console.error('Error en signup:', error);
             res.status(500).json({ error: 'Error en el servidor' });
         }
     }
+    ;
     static async login(req, res) {
         const { username, password } = req.body;
         try {
@@ -52,5 +56,7 @@ class AuthController {
             res.status(500).json({ error: 'Error en el servidor' });
         }
     }
+    ;
 }
+;
 exports.default = AuthController;
