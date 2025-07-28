@@ -29,7 +29,10 @@ class AuthController {
 
       const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET);
 
-      res.status(201).json({ token });
+      res.status(201).json({ 
+        token,
+        usuario: {id_usuario, username, role}});
+ });
     } catch (error) {
       console.error('Error en signup:', error);
       res.status(500).json({ error: 'Error en el servidor' });
@@ -67,5 +70,6 @@ class AuthController {
     }
   }
 }
+
 
 export default AuthController;
