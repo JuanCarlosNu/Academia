@@ -15,7 +15,9 @@ dotenv.config();
 
 const app = express();  
 const PORT = process.env.PORT || 3001;
-const FRONTEND_URL = 'https://academia-olive-beta.vercel.app/' || 'http://localhost:3000';
+const FRONTEND_URL =  process.env.FRONTEND_URL || 'http://localhost:3000';
+
+//'https://academia-olive-beta.vercel.app/' 
 
 // URI de MongoDB Atlas
 
@@ -25,11 +27,12 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error de conexión a MongoDB:', err));
 
-app.use(cors());
-app.use(express.json({
-  origin: FRONTEND_URL || "http://localhost:3000",
+app.use(cors({
+  origin: FRONTEND_URL,
   credentials: true,
 }));
+
+app.use(express.json());
 
 // Rutas de autenticación
 
