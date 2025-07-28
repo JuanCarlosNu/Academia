@@ -4,10 +4,10 @@
   "main": "src/app.ts",
   "type": "commonjs",
   "scripts": {
-    "dev": "nodemon src/app.ts",
-    "build": "tsc",
-    "start": "ts-node src/app.ts"
-  },
+  "dev": "nodemon src/app.ts",
+  "build": "tsc",
+  "start": "node dist/app.js"
+},
   "keywords": [],
   "author": "Juanqui",
   "license": "ISC",
