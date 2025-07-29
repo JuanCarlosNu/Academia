@@ -17,18 +17,32 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const FRONTEND_URL =  process.env.FRONTEND_URL || 'http://localhost:3000';
 
-//'https://academia-olive-beta.vercel.app/' 
-
 // URI de MongoDB Atlas
 
 const MONGO_URI = process.env.MONGO_URI!;
+
+// Conectar a MongoDB
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error de conexión a MongoDB:', err));
 
-app.use(cors({
+/*app.use(cors({
   origin: FRONTEND_URL,
+  credentials: true,
+}));*/
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://academia-olive-beta.vercel.app'
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
   credentials: true,
 }));
 
