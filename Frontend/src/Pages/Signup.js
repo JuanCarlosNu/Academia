@@ -11,15 +11,16 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    // La variable para product fue incorporada como REACT_APP_BACKEND_URL
+    // en Vercel (settings > Environment Variables).
+    const API_URL =
+      process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
     try {
-      const response = await fetch(
-        "https://academia-production-53e3.up.railway.app/api/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
       const data = await response.json();
       console.log("Usuario registrado:", data);
       if (response.ok) {
