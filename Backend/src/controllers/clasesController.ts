@@ -7,7 +7,7 @@ export const crearClase = async (req:Request, res: Response) => {
     const { fecha, hora, alumno, estado } = req.body;
 
     // Validar existencia del alumno
-    
+
     const alumnoExiste = await Alumno.findById(alumno);
     if (!alumnoExiste) {
       return res.status(404).json({ error: 'Alumno no encontrado' });
@@ -34,7 +34,7 @@ export const getClases = async (req: Request, res: Response) => {
     const clases = await Clase.find()
       .populate('profesor')
       .populate('circuito')
-      .populate('alumnos');
+      .populate('alumno');
     res.status(200).json(clases);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener las clases', error });
