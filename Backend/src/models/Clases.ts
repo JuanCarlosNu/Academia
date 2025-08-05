@@ -9,12 +9,12 @@ const ClaseSchema = new mongoose.Schema({
   profesor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profesor',
-    required: true,
+    required: false,
   },
   circuito: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Circuito',
-    required: true,
+    required: false,
   },
   fecha: {
     type: String, // formato YYYY-MM-DD
