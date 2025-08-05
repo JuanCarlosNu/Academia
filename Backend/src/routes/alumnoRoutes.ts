@@ -1,8 +1,10 @@
+import { getAlumnos, createAlumno } from './../controllers/alumnoController';
 import express  from "express";
-import { getProfesores, createProfesor } from './../controllers/profesorController';
-
+ 
 const router = express.Router();
 
+router.get('/', getAlumnos);
+router.post('/', createAlumno);
 
 
 export default router;
