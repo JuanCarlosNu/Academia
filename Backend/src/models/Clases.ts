@@ -26,7 +26,7 @@ const ClaseSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    enum: ['reservada', 'completada', 'cancelada'],
+    enum: ['reservada', 'completada', 'cancelada', 'pendiente'],
     default: 'reservada',
   },
   pago: {
