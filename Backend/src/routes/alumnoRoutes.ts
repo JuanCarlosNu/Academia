@@ -3,7 +3,6 @@ import { getProfesores, createProfesor } from './../controllers/profesorControll
 
 const router = express.Router();
 
-router.get('/', getProfesores);
-router.post('/', createProfesor);
+
 
 export default router;

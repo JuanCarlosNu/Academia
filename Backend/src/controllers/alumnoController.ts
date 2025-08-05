@@ -1,5 +1,4 @@
 import alumno from "../models/alumno";
-import profesor from "../models/profesor";
 import { Request, Response } from "express";
 
 export const getAlumnos = async (req: Request, res: Response) => {
