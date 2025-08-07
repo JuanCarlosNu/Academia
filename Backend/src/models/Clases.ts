@@ -1,4 +1,18 @@
 import mongoose from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+import { IAlumno } from './alumno';
+import { ICircuito } from './circuito';
+import { IProfesor } from './profesor';
+
+export interface IClase extends Document {
+  fecha: string;
+  hora: string;
+  estado: string;
+  alumno: Types.ObjectId | IAlumno;
+  profesor?: Types.ObjectId | IProfesor;
+  circuito?: Types.ObjectId | ICircuito;
+}
+
 
 const ClaseSchema = new mongoose.Schema({
   alumno: {
@@ -35,4 +49,4 @@ const ClaseSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-export default mongoose.model('Clase', ClaseSchema);
+export default model<IClase>('Clase', ClaseSchema);
