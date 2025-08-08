@@ -17,6 +17,7 @@ function WeekView({ week, onSelectDay }) {
             </span>
             <span>{dayObj.date.getDate()}</span>
           </div>
+          {console.log("el objeto día es:", dayObj)}
 
           {dayObj.classes.length ? (
             dayObj.classes.map((c) => (

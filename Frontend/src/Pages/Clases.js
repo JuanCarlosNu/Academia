@@ -1,24 +1,28 @@
 // src/pages/Clases/Clases.js
 import React, { useState } from "react";
-import "./Clases.css";
+import { useEffect } from "react";
+import axios from "axios";
 import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
 import { getWeekRange } from "../Utils/dateUtils";
+import "./Clases.css";
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("día");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [classesOfDay, setClassesOfDay] = useState([]);
+  const [classesOfWeek, setClassesOfWeek] = useState([]);
 
   const dummyDay = [
     { id: 1, student: "María", circuit: "Circuito 2", time: "14:30" },
     { id: 2, student: "Juan", circuit: "Circuito 1", time: "16:00" },
   ];
 
-  const dummyWeek = getDummyWeek(currentDate);
+  //const dummyWeek = getDummyWeek(currentDate);
 
   /* ★ botón día de la semana desde WeekView */
+
   const handleSelectDay = (dayObj) => {
     setCurrentDate(dayObj.date);
     setClassesOfDay(dayObj.classes);
@@ -26,11 +30,13 @@ function Clases() {
   };
 
   /* ★ “Hoy” */
+
   const goToday = () => {
     setCurrentDate(new Date());
     setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
+
   /* ★ navegar semana */
 
   const goPrevWeek = () => {
@@ -46,9 +52,36 @@ function Clases() {
     next.setDate(start.getDate() + 7);
     setCurrentDate(next);
   };
+
   /* ★ título variable */
+
   const titleLabel =
     activeRange === "semana" ? "Semana de:" : "Clases del día:";
+
+  useEffect(() => {
+    const { start } = getWeekRange(currentDate);
+    const isoInicio = start.toISOString().split("T")[0];
+
+    axios
+      .get(`/api/clases/semana?inicio=${isoInicio}`)
+      .then((res) => {
+        const formatted = res.data.map((dia) => ({
+          date: new Date(dia.fecha),
+          classes: dia.clases.map((c) => ({
+            id: c._id,
+            time: c.hora,
+            circuit: c.circuito?.nombre || "Sin circuito",
+            student:
+              `${c.alumno?.nombre} ${c.alumno?.apellido}` || "Sin alumno",
+          })),
+        }));
+        setClassesOfWeek(formatted);
+      })
+      .catch((err) => {
+        console.error("Error al cargar semana:", err);
+        setClassesOfWeek([]); // fallback vacío
+      });
+  }, [currentDate]);
 
   return (
     <div className="clases-container">
@@ -80,9 +113,10 @@ function Clases() {
       />
 
       {/* Contenido dinámico */}
+
       {activeRange === "día" && <DayView classes={classesOfDay} />}
       {activeRange === "semana" && (
-        <WeekView week={dummyWeek} onSelectDay={handleSelectDay} />
+        <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}
       {activeRange === "mes" && <p>Próximamente: vista mensual...</p>}
     </div>
@@ -90,19 +124,3 @@ function Clases() {
 }
 
 export default Clases;
-
-function getDummyWeek(baseDate) {
-  const start = new Date(baseDate);
-  start.setDate(start.getDate() - start.getDay()); // domingo
-  return Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    return {
-      date: d,
-      classes:
-        i % 2
-          ? []
-          : [{ id: i, student: "Alumno demo", circuit: "C1", time: "15:00" }],
-    };
-  });
-}
