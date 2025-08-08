@@ -59,29 +59,36 @@ function Clases() {
     activeRange === "semana" ? "Semana de:" : "Clases del día:";
 
   useEffect(() => {
-    const { start } = getWeekRange(currentDate);
+    const { start, end } = getWeekRange(currentDate);
     const isoInicio = start.toISOString().split("T")[0];
+    const isoFin = end.toISOString().split("T")[0];
+
+    console.log("Rango de semana:", isoInicio, isoFin);
 
     axios
-      .get(`/api/clases/semana?inicio=${isoInicio}`)
+      .get(
+        `http://localhost:3001/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`
+      )
       .then((res) => {
-        const formatted = res.data.map((dia) => ({
-          date: new Date(dia.fecha),
-          classes: dia.clases.map((c) => ({
-            id: c._id,
-            time: c.hora,
-            circuit: c.circuito?.nombre || "Sin circuito",
-            student:
-              `${c.alumno?.nombre} ${c.alumno?.apellido}` || "Sin alumno",
+        const formatted = res.data.dias.map((dia) => ({
+          date: new Date(dia.date),
+          classes: dia.classes.map((c) => ({
+            id: c.id,
+            time: c.time,
+            circuit: c.circuit,
+            student: c.student,
+            estado: c.estado,
           })),
         }));
         setClassesOfWeek(formatted);
       })
       .catch((err) => {
         console.error("Error al cargar semana:", err);
-        setClassesOfWeek([]); // fallback vacío
+        setClassesOfWeek([]);
       });
   }, [currentDate]);
+
+  console.log("Clases de la semana:", classesOfWeek);
 
   return (
     <div className="clases-container">
