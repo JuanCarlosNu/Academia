@@ -7,6 +7,7 @@ import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
 import { getWeekRange } from "../Utils/dateUtils";
 import "./Clases.css";
+import MonthView from "../Components/MonthView/MonthView";
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("día");
@@ -58,6 +59,8 @@ function Clases() {
   const titleLabel =
     activeRange === "semana" ? "Semana de:" : "Clases del día:";
 
+  /* ★ cargar clases de la semana al iniciar */
+
   useEffect(() => {
     const { start, end } = getWeekRange(currentDate);
     const isoInicio = start.toISOString().split("T")[0];
@@ -90,6 +93,27 @@ function Clases() {
 
   console.log("Clases de la semana:", classesOfWeek);
 
+  /* ★ manejar edición de clases */
+
+  const handleEdit = (clase) => {
+    // Abrir modal o redirigir a formulario de edición
+    alert(`Editar clase de ${clase.student} a las ${clase.time}`);
+  };
+
+  const handleCancel = async (id) => {
+    if (!window.confirm("¿Seguro que querés cancelar esta clase?")) return;
+
+    try {
+      await axios.delete(`/api/clases/${id}`);
+      // Actualizar vista
+      setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
+    } catch (err) {
+      console.error("Error al cancelar clase:", err);
+      alert("No se pudo cancelar la clase.");
+    }
+  };
+
+  /* ★ renderizar */
   return (
     <div className="clases-container">
       {/* Encabezado 1 */}
@@ -125,7 +149,9 @@ function Clases() {
       {activeRange === "semana" && (
         <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}
-      {activeRange === "mes" && <p>Próximamente: vista mensual...</p>}
+      {activeRange === "mes" && (
+        <MonthView monthData={[]} onSelectDay={handleSelectDay} />
+      )}
     </div>
   );
 }
