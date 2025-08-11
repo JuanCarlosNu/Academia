@@ -6,14 +6,45 @@ import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
 import { getWeekRange } from "../Utils/dateUtils";
-import "./Clases.css";
 import MonthView from "../Components/MonthView/MonthView";
+import "./Clases.css";
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("día");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [classesOfDay, setClassesOfDay] = useState([]);
   const [classesOfWeek, setClassesOfWeek] = useState([]);
+  const [selectedClase, setSelectedClase] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEdit = (clase) => {
+    setSelectedClase(clase);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedClase(null);
+    setShowModal(false);
+  };
+
+  const handleSaveEdit = (id, Data) => {
+    // Lógica para guardar los cambios
+    console.log("Guardar cambios para clase:", id, Data);
+    setShowModal(false);
+  };
+
+  const handleCancel = async (id) => {
+    if (!window.confirm("¿Seguro que querés cancelar esta clase?")) return;
+
+    try {
+      await axios.delete(`/api/clases/${id}`);
+      // Actualizar vista
+      setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
+    } catch (err) {
+      console.error("Error al cancelar clase:", err);
+      alert("No se pudo cancelar la clase.");
+    }
+  };
 
   const dummyDay = [
     { id: 1, student: "María", circuit: "Circuito 2", time: "14:30" },
@@ -95,24 +126,6 @@ function Clases() {
 
   /* ★ manejar edición de clases */
 
-  const handleEdit = (clase) => {
-    // Abrir modal o redirigir a formulario de edición
-    alert(`Editar clase de ${clase.student} a las ${clase.time}`);
-  };
-
-  const handleCancel = async (id) => {
-    if (!window.confirm("¿Seguro que querés cancelar esta clase?")) return;
-
-    try {
-      await axios.delete(`/api/clases/${id}`);
-      // Actualizar vista
-      setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
-    } catch (err) {
-      console.error("Error al cancelar clase:", err);
-      alert("No se pudo cancelar la clase.");
-    }
-  };
-
   /* ★ renderizar */
   return (
     <div className="clases-container">
@@ -145,7 +158,13 @@ function Clases() {
 
       {/* Contenido dinámico */}
 
-      {activeRange === "día" && <DayView classes={classesOfDay} />}
+      {activeRange === "día" && (
+        <DayView
+          classes={classesOfDay}
+          onEdit={handleEdit}
+          onCancel={handleCancel}
+        />
+      )}
       {activeRange === "semana" && (
         <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}

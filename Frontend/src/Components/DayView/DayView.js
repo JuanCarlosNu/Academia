@@ -2,7 +2,7 @@
 import React from "react";
 import "./DayView.css";
 
-function DayView({ classes, handleEdit, handleCancel }) {
+function DayView({ classes, onEdit, onCancel }) {
   if (!classes.length) {
     return <p className="empty-msg">No hay clases programadas para este día</p>;
   }
@@ -17,11 +17,12 @@ function DayView({ classes, handleEdit, handleCancel }) {
           </div>
 
           <div className="right">
-            <button onClick={() => handleEdit(c)} className="edit-btn">
+            <button onClick={() => onEdit(c)} className="edit-btn">
               ✏️
             </button>
-            <button onClick={() => handleCancel(c.id)}>❌</button>
-
+            <button onClick={() => onCancel(c.id)} className="cancel-btn">
+              ❌
+            </button>
             <span className="time-badge">{c.time}</span>
           </div>
         </div>
