@@ -5,7 +5,7 @@ import axios from "axios";
 import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
-import { getWeekRange } from "../Utils/dateUtils";
+import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
 import MonthView from "../Components/MonthView/MonthView";
 import EditModal from "../Components/EditModal/EditModal";
 import "./Clases.css";
@@ -125,17 +125,26 @@ function Clases() {
         const answer = res.data;
         console.log("Respuesta de la API:", answer); // recibe la semana correctamente
 
-        const formatted = answer.dias.map((dia) => ({
-          // creo que en este almacenamiento se produce el error
-          date: new Date(dia.date),
-          classes: dia.classes.map((c) => ({
-            id: c.id,
-            time: c.time,
-            circuit: c.circuit,
-            student: c.student,
-            estado: c.estado,
-          })),
-        }));
+        const formatted = answer.dias.map((dia) => {
+          const fechaNormalizada = normalizeDateLocal(dia.date);
+          console.log(
+            "Fecha original:",
+            dia.date,
+            "→ Fecha normalizada:",
+            fechaNormalizada
+          );
+
+          return {
+            date: fechaNormalizada,
+            classes: dia.classes.map((c) => ({
+              id: c.id,
+              time: c.time,
+              circuit: c.circuit,
+              student: c.student,
+              estado: c.estado,
+            })),
+          };
+        });
         setClassesOfWeek(formatted); // manda el array de clases de la semana
         //al state almacenado en classesOfWeek, aquí el array de la semana quda corrido un día
       })

@@ -14,3 +14,8 @@ export function formatShort(d) {
   const options = { year: "numeric", month: "short", day: "numeric" };
   return d.toLocaleDateString("es-ES", options);
 }
+
+export function normalizeDateLocal(dateStr) {
+  const [year, month, day] = dateStr.split("T")[0].split("-");
+  return new Date(Number(year), Number(month) - 1, Number(day));
+}
