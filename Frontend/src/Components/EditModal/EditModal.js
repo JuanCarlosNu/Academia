@@ -3,14 +3,20 @@ import "./EditModal.css";
 
 function EditModal({ clase, onClose, onSave }) {
   const [formData, setFormData] = useState({
-    time: "",
+    fecha: "",
+    hora: "",
+    alumno: "",
+    circuito: "",
     estado: "",
   });
 
   useEffect(() => {
     if (clase) {
       setFormData({
-        time: clase.time,
+        fecha: clase.fecha,
+        hora: clase.time, // unificado
+        alumno: clase.student,
+        circuito: clase.circuit,
         estado: clase.estado,
       });
     }
@@ -23,6 +29,8 @@ function EditModal({ clase, onClose, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Clase que se va a editar:", clase);
+
     onSave(clase.id, formData);
   };
 
@@ -32,15 +40,49 @@ function EditModal({ clase, onClose, onSave }) {
         <h3>Editar Clase</h3>
         <form onSubmit={handleSubmit}>
           <label>
-            Hora:
+            Fecha:
             <input
-              type="time"
-              name="time"
-              value={formData.time}
+              type="date"
+              name="fecha"
+              value={formData.fecha}
               onChange={handleChange}
               required
             />
           </label>
+
+          <label>
+            Hora:
+            <input
+              type="time"
+              name="hora"
+              value={formData.hora}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            Alumno:
+            <input
+              type="text"
+              name="alumno"
+              value={formData.alumno}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          <label>
+            Circuito:
+            <input
+              type="text"
+              name="circuito"
+              value={formData.circuito}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
           <label>
             Estado:
             <select
@@ -53,6 +95,7 @@ function EditModal({ clase, onClose, onSave }) {
               <option value="cancelada">Cancelada</option>
             </select>
           </label>
+
           <div className="modal-buttons">
             <button type="submit">Guardar</button>
             <button type="button" onClick={onClose}>

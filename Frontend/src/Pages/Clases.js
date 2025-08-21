@@ -7,6 +7,7 @@ import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
 import { getWeekRange } from "../Utils/dateUtils";
 import MonthView from "../Components/MonthView/MonthView";
+import EditModal from "../Components/EditModal/EditModal";
 import "./Clases.css";
 
 function Clases() {
@@ -20,6 +21,7 @@ function Clases() {
   const handleEdit = (clase) => {
     setSelectedClase(clase);
     setShowModal(true);
+    console.log("Clase seleccionada para editar:", selectedClase);
   };
 
   const handleCloseModal = () => {
@@ -27,10 +29,24 @@ function Clases() {
     setShowModal(false);
   };
 
-  const handleSaveEdit = (id, Data) => {
-    // Lógica para guardar los cambios
-    console.log("Guardar cambios para clase:", id, Data);
-    setShowModal(false);
+  const handleSaveEdit = async (id, data) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const res = await axios.put(
+        `http://localhost:3001/api/clases/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Clase actualizada:", res.data);
+      setShowModal(false); // cerrar modal
+    } catch (err) {
+      console.error("Error al editar clase:", err);
+    }
   };
 
   const handleCancel = async (id) => {
@@ -85,7 +101,7 @@ function Clases() {
     setCurrentDate(next);
   };
 
-  /* ★ título variable */
+  /* ★ título variable o dinámico */
 
   const titleLabel =
     activeRange === "semana" ? "Semana de:" : "Clases del día:";
@@ -97,14 +113,20 @@ function Clases() {
     const isoInicio = start.toISOString().split("T")[0];
     const isoFin = end.toISOString().split("T")[0];
 
-    console.log("Rango de semana:", isoInicio, isoFin);
+    console.log("Rango de semana:", isoInicio, isoFin); // es correcto
+
+    const callWeek = `http://localhost:3001/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
+
+    console.log("Llamada a la API:", callWeek); // llama correctamente
 
     axios
-      .get(
-        `http://localhost:3001/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`
-      )
+      .get(callWeek)
       .then((res) => {
-        const formatted = res.data.dias.map((dia) => ({
+        const answer = res.data;
+        console.log("Respuesta de la API:", answer); // recibe la semana correctamente
+
+        const formatted = answer.dias.map((dia) => ({
+          // creo que en este almacenamiento se produce el error
           date: new Date(dia.date),
           classes: dia.classes.map((c) => ({
             id: c.id,
@@ -114,15 +136,16 @@ function Clases() {
             estado: c.estado,
           })),
         }));
-        setClassesOfWeek(formatted);
+        setClassesOfWeek(formatted); // manda el array de clases de la semana
+        //al state almacenado en classesOfWeek, aquí el array de la semana quda corrido un día
       })
       .catch((err) => {
         console.error("Error al cargar semana:", err);
         setClassesOfWeek([]);
       });
-  }, [currentDate]);
+  }, [currentDate]); //ejecutá este bloque de código cada vez que cambie currentDate
 
-  console.log("Clases de la semana:", classesOfWeek);
+  console.log("Clases en el estado:", classesOfWeek); // corroboro que el state se actualiza correctamente con la semana corrida un día
 
   /* ★ manejar edición de clases */
 
@@ -165,11 +188,23 @@ function Clases() {
           onCancel={handleCancel}
         />
       )}
+
       {activeRange === "semana" && (
         <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}
+
       {activeRange === "mes" && (
         <MonthView monthData={[]} onSelectDay={handleSelectDay} />
+      )}
+
+      {/*Al presionar editar se despliega el modal de edición*/}
+
+      {showModal && (
+        <EditModal
+          clase={selectedClase}
+          onClose={handleCloseModal}
+          onSave={handleSaveEdit}
+        />
       )}
     </div>
   );

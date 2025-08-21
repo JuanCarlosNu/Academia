@@ -56,6 +56,9 @@
     try {
       const { desde, hasta } = req.query;
 
+      console.log("📅 Parámetros recibidos:", { desde, hasta });
+
+
       if (!desde || !hasta) {
         return res.status(400).json({ error: 'Faltan parámetros desde y hasta' });
       }
@@ -65,9 +68,7 @@
 })
   .populate({ path: 'alumno', select: 'nombre apellido' })
   .populate({ path: 'circuito', select: 'nombre' }) as ClasePoblada[];
-
-
-
+    console.log("📅 Clases encontradas:", clasesPorSemana);
       const dias = [];
 
       const desdeDate = new Date(desde as string);
@@ -79,20 +80,24 @@
         d.setDate(d.getDate() + 1)
       ) {
         const fechaStr = d.toISOString().slice(0, 10);
+        console.log("📅 Procesando fecha:", fechaStr);
 
         const clasesDelDia = clasesPorSemana.filter(
           (clase) => clase.fecha === fechaStr
         );
-
+        //El objeto día tiene dos propiedades: la fecha y una array con las clases.
         dias.push({
           date: new Date(fechaStr),
           classes: clasesDelDia.map((c) => ({
-            id: c._id,
-            time: c.hora,
-            circuit: c.circuito?.nombre || 'Sin circuito',
-            student: `${c.alumno?.nombre} ${c.alumno?.apellido}` || 'Sin alumno',
-            estado: c.estado
-          }))
+             id: c._id,
+           time: c.hora,
+          fecha: c.fecha,
+       alumnoId: c.alumno?._id,
+     circuitoId: c.circuito?.nombre|| null, //aca pedía _id pero lo cambié.
+        circuit: typeof c.circuito === 'object' ? c.circuito.nombre : 'Sin circuito',
+        student: c.alumno ? `${c.alumno.nombre} ${c.alumno.apellido}` : 'Sin alumno',
+         estado: c.estado
+     }))        
         });
       }
 
@@ -104,5 +109,54 @@
       console.error('Error al obtener clases por semana:', error);
       res.status(500).json({ error: 'Error al obtener clases por semana' });
     }
-  };
+  };  
+
+  export const editarClase = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { fecha, hora, alumno, circuito, estado } = req.body;
+
+    // Validar existencia de la clase
+    const claseExistente = await Clase.findById(id);
+    if (!claseExistente) {
+      return res.status(404).json({ error: 'Clase no encontrada' });
+    }
+
+    // Validar existencia del alumno
+    const alumnoExiste = await Alumno.findById(alumno);
+    if (!alumnoExiste) {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+
+    // Validar existencia del circuito (si se envía)
+    if (circuito) {
+      const circuitoExiste = await Circuito.findById(circuito);
+      if (!circuitoExiste) {
+        return res.status(404).json({ error: 'Circuito no encontrado' });
+      }
+    }
+
+    // Actualizar la clase
+    claseExistente.fecha = fecha || claseExistente.fecha;
+    claseExistente.hora = hora || claseExistente.hora;
+    claseExistente.alumno = alumno || claseExistente.alumno;
+    claseExistente.circuito = circuito || claseExistente.circuito;
+    claseExistente.estado = estado || claseExistente.estado;
+
+    const claseActualizada = await claseExistente.save();
+
+    // Poblamos para devolver datos completos
+    const clasePoblada = await Clase.findById(claseActualizada._id)
+      .populate({ path: 'alumno', select: 'nombre apellido' })
+      .populate({ path: 'circuito', select: 'nombre' }) as ClasePoblada;
+
+    res.status(200).json(clasePoblada);
+  } catch (error) {
+    console.error('Error al editar clase:', error);
+    res.status(500).json({ error: 'Error al editar la clase' });
+  }
+};
+
+
+  
 

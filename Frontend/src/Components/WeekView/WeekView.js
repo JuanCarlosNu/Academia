@@ -5,6 +5,7 @@ import "./WeekView.css";
 function WeekView({ week, onSelectDay }) {
   return (
     <div className="week-grid">
+      {console.log("📅 Semana actual:", week)}
       {week.map((dayObj) => (
         <div
           key={dayObj.date}
