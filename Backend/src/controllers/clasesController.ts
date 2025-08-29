@@ -10,9 +10,8 @@
 
   export const crearClase = async (req:Request, res: Response) => {
     try {
-      const { fecha, hora, alumno, estado } = req.body;
-
-      // Validar existencia del alumno
+      const { fecha, hora, alumno, estado, circuito } = req.body;
+       // Validar existencia del alumno
 
       const alumnoExiste = await Alumno.findById(alumno);
       if (!alumnoExiste) {
@@ -24,8 +23,7 @@
       if (claseExistente) {
         return res.status(400).json({ error: 'Ya existe una clase para ese alumno en ese horario' });
       }
-
-      const nuevaClase = new Clase({ fecha, hora, alumno, estado });
+      const nuevaClase = new Clase({ fecha, hora, alumno, estado, circuito });
       await nuevaClase.save();
 
       res.status(201).json(nuevaClase);
@@ -69,6 +67,7 @@
   .populate({ path: 'alumno', select: 'nombre apellido' })
   .populate({ path: 'circuito', select: 'nombre' }) as ClasePoblada[];
     console.log("📅 Clases encontradas:", clasesPorSemana);
+
       const dias = [];
 
       const desdeDate = new Date(desde as string);
@@ -85,6 +84,7 @@
         const clasesDelDia = clasesPorSemana.filter(
           (clase) => clase.fecha === fechaStr
         );
+
         //El objeto día tiene dos propiedades: la fecha y una array con las clases.
         dias.push({
           date: new Date(fechaStr),
@@ -93,9 +93,10 @@
            time: c.hora,
           fecha: c.fecha,
        alumnoId: c.alumno?._id,
+       alumnoName: c.alumno?.nombre || null,
      circuitoId: c.circuito?.nombre|| null, //aca pedía _id pero lo cambié.
         circuit: typeof c.circuito === 'object' ? c.circuito.nombre : 'Sin circuito',
-        student: c.alumno ? `${c.alumno.nombre} ${c.alumno.apellido}` : 'Sin alumno',
+        student: c.alumno ? `${c.alumno.nombre}` : 'Sin alumno',
          estado: c.estado
      }))        
         });
@@ -114,7 +115,7 @@
   export const editarClase = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { fecha, hora, alumno, circuito, estado } = req.body;
+    const { fecha, hora, alumno,  estado } = req.body;
 
     // Validar existencia de la clase
     const claseExistente = await Clase.findById(id);
@@ -128,19 +129,19 @@
       return res.status(404).json({ error: 'Alumno no encontrado' });
     }
 
-    // Validar existencia del circuito (si se envía)
-    if (circuito) {
+    //Validar existencia del circuito (si se envía)
+    /*if (circuito) {
       const circuitoExiste = await Circuito.findById(circuito);
       if (!circuitoExiste) {
         return res.status(404).json({ error: 'Circuito no encontrado' });
       }
-    }
+    }*/
 
     // Actualizar la clase
     claseExistente.fecha = fecha || claseExistente.fecha;
     claseExistente.hora = hora || claseExistente.hora;
     claseExistente.alumno = alumno || claseExistente.alumno;
-    claseExistente.circuito = circuito || claseExistente.circuito;
+   // claseExistente.circuito = circuito || claseExistente.circuito;
     claseExistente.estado = estado || claseExistente.estado;
 
     const claseActualizada = await claseExistente.save();
