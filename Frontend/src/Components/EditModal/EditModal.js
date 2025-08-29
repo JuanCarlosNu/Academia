@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./EditModal.css";
 
-function EditModal({ clase, onClose, onSave }) {
+function EditModal({ clase, onClose, onSave, currentDate }) {
   const [formData, setFormData] = useState({
     fecha: "",
     hora: "",
@@ -13,9 +13,9 @@ function EditModal({ clase, onClose, onSave }) {
   useEffect(() => {
     if (clase) {
       setFormData({
-        fecha: clase.fecha,
+        fecha: clase.fecha || currentDate.toISOString().slice(0, 10), // toma la fecha desde currentDate
         hora: clase.time, // unificado
-        alumno: clase.student,
+        alumno: clase.alumnoId,
         circuito: clase.circuit,
         estado: clase.estado,
       });
@@ -25,12 +25,13 @@ function EditModal({ clase, onClose, onSave }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log("Datos del formulario:", formData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Clase que se va a editar:", clase);
-
+    console.log("Datos enviados al backend:", formData);
     onSave(clase.id, formData);
   };
 
@@ -93,6 +94,8 @@ function EditModal({ clase, onClose, onSave }) {
               <option value="reservada">Reservada</option>
               <option value="confirmada">Confirmada</option>
               <option value="cancelada">Cancelada</option>
+              <option value="completada">Completada</option>
+              <option value="pendiente">Pendiente</option>
             </select>
           </label>
 
