@@ -4,10 +4,14 @@ import { IAlumno } from './alumno';
 import { ICircuito } from './circuito';
 import { IProfesor } from './profesor';
 
+//interfaz typeScipt
+
 export interface IClase extends Document {
   fecha: string;
   hora: string;
   estado: string;
+  // a continuación, la sintaxin del tipado del campo indica
+  //  que sea: un id al crear o editar | y un objeto poblado al hacer populate.
   alumno: Types.ObjectId | IAlumno;
   profesor?: Types.ObjectId | IProfesor;
   circuito?: Types.ObjectId | ICircuito;
@@ -40,7 +44,7 @@ const ClaseSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    enum: ['reservada', 'completada', 'cancelada', 'pendiente'],
+    enum: ['reservada', 'completada','confirmada', 'cancelada', 'pendiente'],
     default: 'reservada',
   },
   pago: {

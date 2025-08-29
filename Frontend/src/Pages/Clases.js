@@ -11,7 +11,7 @@ import EditModal from "../Components/EditModal/EditModal";
 import "./Clases.css";
 
 function Clases() {
-  const [activeRange, setActiveRange] = useState("día");
+  const [activeRange, setActiveRange] = useState("semana");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [classesOfDay, setClassesOfDay] = useState([]);
   const [classesOfWeek, setClassesOfWeek] = useState([]);
@@ -21,7 +21,6 @@ function Clases() {
   const handleEdit = (clase) => {
     setSelectedClase(clase);
     setShowModal(true);
-    console.log("Clase seleccionada para editar:", selectedClase);
   };
 
   const handleCloseModal = () => {
@@ -29,7 +28,12 @@ function Clases() {
     setShowModal(false);
   };
 
+  /* ★ manejar edición de clases */
+
   const handleSaveEdit = async (id, data) => {
+    console.log("ID recibido para editar:", id);
+    console.log("Datos recibidos:", data);
+
     const token = localStorage.getItem("token");
 
     try {
@@ -69,7 +73,7 @@ function Clases() {
 
   //const dummyWeek = getDummyWeek(currentDate);
 
-  /* ★ botón día de la semana desde WeekView */
+  /* ★ botón día de la semana desde WeekView forma el dayObj */
 
   const handleSelectDay = (dayObj) => {
     setCurrentDate(dayObj.date);
@@ -106,14 +110,12 @@ function Clases() {
   const titleLabel =
     activeRange === "semana" ? "Semana de:" : "Clases del día:";
 
-  /* ★ cargar clases de la semana al iniciar */
+  /* ★ cargar clases de la semana Actual al iniciar */
 
   useEffect(() => {
     const { start, end } = getWeekRange(currentDate);
     const isoInicio = start.toISOString().split("T")[0];
     const isoFin = end.toISOString().split("T")[0];
-
-    console.log("Rango de semana:", isoInicio, isoFin); // es correcto
 
     const callWeek = `http://localhost:3001/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
 
@@ -124,29 +126,39 @@ function Clases() {
       .then((res) => {
         const answer = res.data;
         console.log("Respuesta de la API:", answer); // recibe la semana correctamente
-
+        /* devuelve una objeto así: {rango: {…}, dias: Array(7)}
+        por eso se accede a los días así: "answer.dias" que es un objeto así:
+        {date: '2025-08-24T00:00:00.000Z', classes: Array(2)}
+        Entonces hay que mapear los días y las clases de cada día
+        */
+        //aquí mapeo los días
         const formatted = answer.dias.map((dia) => {
           const fechaNormalizada = normalizeDateLocal(dia.date);
-          console.log(
+          /*console.log(
             "Fecha original:",
             dia.date,
             "→ Fecha normalizada:",
-            fechaNormalizada
-          );
+            fechaNormalizada,
+            "→ Día:",
+            fechaNormalizada.getDay()
+          );*/
 
           return {
             date: fechaNormalizada,
+            //aqui mapeo las clases del día
             classes: dia.classes.map((c) => ({
               id: c.id,
               time: c.time,
-              circuit: c.circuit,
+              circuit: c.circuitId,
               student: c.student,
+              alumnoId: c.alumnoId,
               estado: c.estado,
             })),
           };
         });
-        setClassesOfWeek(formatted); // manda el array de clases de la semana
-        //al state almacenado en classesOfWeek, aquí el array de la semana quda corrido un día
+        setClassesOfWeek(formatted); // manda el array de dias y clases
+        // {date: Sun Aug 24 2025 (hora estándar de Argentina), classes: Array(0)} de la semana
+        //al state almacenado en classesOfWeek.
       })
       .catch((err) => {
         console.error("Error al cargar semana:", err);
@@ -154,9 +166,16 @@ function Clases() {
       });
   }, [currentDate]); //ejecutá este bloque de código cada vez que cambie currentDate
 
-  console.log("Clases en el estado:", classesOfWeek); // corroboro que el state se actualiza correctamente con la semana corrida un día
+  console.log("días en el estado:", classesOfWeek); // corroboro que el state se actualiza correctamente con la semana corrida un día
 
-  /* ★ manejar edición de clases */
+  /* verificar si se ha seleccionado una clase y mostrarla en consola cuando el usuario
+  hace click en ✏️*/
+
+  useEffect(() => {
+    if (selectedClase) {
+      console.log("Clase seleccionada actualizada:", selectedClase);
+    }
+  }, [selectedClase]);
 
   /* ★ renderizar */
   return (
@@ -211,6 +230,7 @@ function Clases() {
       {showModal && (
         <EditModal
           clase={selectedClase}
+          currentDate={currentDate}
           onClose={handleCloseModal}
           onSave={handleSaveEdit}
         />
