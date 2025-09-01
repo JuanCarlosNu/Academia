@@ -5,7 +5,7 @@
   "type": "commonjs",
   "scripts": {
   "dev": "nodemon src/app.ts",
-  "build":"tsc --max-old-space-size=512",
+  "build": "node --max-old-space-size=512 ./node_modules/typescript/bin/tsc",
   "prestart": "npm run build",
   "start": "node dist/app.js"
 },
