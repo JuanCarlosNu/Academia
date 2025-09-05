@@ -14,7 +14,7 @@ const Login = () => {
     // La variable para product fue incorporada como REACT_APP_BACKEND_URL
     // en Vercel (settings > Environment Variables).
     const API_URL =
-      process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+      process.env.REACT_APP_BACKEND_URL_RENDER || "http://localhost:3001";
     try {
       console.log(API_URL);
       const response = await fetch(`${API_URL}/api/login`, {
