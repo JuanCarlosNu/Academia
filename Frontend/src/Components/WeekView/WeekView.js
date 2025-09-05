@@ -3,7 +3,6 @@ import React from "react";
 import "./WeekView.css";
 
 function WeekView({ week, onSelectDay }) {
-  0;
   return (
     <div className="week-grid">
       {console.log("📅 Semana actual:", week)}
