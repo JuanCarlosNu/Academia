@@ -9,6 +9,10 @@ import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
 import MonthView from "../Components/MonthView/MonthView";
 import EditModal from "../Components/EditModal/EditModal";
 import "./Clases.css";
+const API_URL =
+  process.env.REACT_APP_BACKEND_URL_RENDER ||
+  process.env.REACT_APP_BACKEND_URL_RAILWAY ||
+  "http://localhost:3001";
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("semana");
@@ -37,15 +41,11 @@ function Clases() {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await axios.put(
-        `http://localhost:3001/api/clases/${id}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.put(`${API_URL}/api/clases/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Clase actualizada:", res.data);
       setShowModal(false); // cerrar modal
     } catch (err) {
@@ -117,7 +117,7 @@ function Clases() {
     const isoInicio = start.toISOString().split("T")[0];
     const isoFin = end.toISOString().split("T")[0];
 
-    const callWeek = `http://localhost:3001/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
+    const callWeek = `${API_URL}/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
 
     console.log("Llamada a la API:", callWeek); // llama correctamente
 
