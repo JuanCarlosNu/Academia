@@ -9,7 +9,9 @@ import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
 import MonthView from "../Components/MonthView/MonthView";
 import EditModal from "../Components/EditModal/EditModal";
 import "./Clases.css";
-const API_URL =
+import CreateModal from "../Components/CreateModal/CreateModal";
+
+export const API_URL =
   process.env.REACT_APP_BACKEND_URL_RENDER ||
   process.env.REACT_APP_BACKEND_URL_RAILWAY ||
   "http://localhost:3001";
@@ -21,6 +23,25 @@ function Clases() {
   const [classesOfWeek, setClassesOfWeek] = useState([]);
   const [selectedClase, setSelectedClase] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const handleCreateClase = () => {
+    setShowCreateModal(true); // abre el modal de creación.
+  };
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleClaseCreada = () => {
+    //  Recargar la semana actual o el día actual según el rango activo
+    if (activeRange === "semana") {
+      // Reutilizá el efecto que carga la semana
+      setCurrentDate(new Date(currentDate)); // fuerza el efecto
+    } else if (activeRange === "día") {
+      // Recargar el día actual
+      goToday();
+    }
+  };
 
   const handleEdit = (clase) => {
     setSelectedClase(clase);
@@ -205,6 +226,7 @@ function Clases() {
         onNext={goNextWeek}
         onToday={goToday}
         onCancel={() => alert("Función cancelar")}
+        onCreate={handleCreateClase}
       />
 
       {/* Contenido dinámico */}
@@ -233,6 +255,13 @@ function Clases() {
           currentDate={currentDate}
           onClose={handleCloseModal}
           onSave={handleSaveEdit}
+        />
+      )}
+
+      {showCreateModal && (
+        <CreateModal
+          onClose={handleCloseCreateModal}
+          onCreate={handleClaseCreada}
         />
       )}
     </div>
