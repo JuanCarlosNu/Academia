@@ -7,6 +7,7 @@ function DateHeader({
   currentDate,
   onToday,
   onCancel,
+  onCreate,
   activeRange,
   onPrev,
   onNext,
@@ -50,6 +51,9 @@ function DateHeader({
         </button>
         <button className="action-btn cancel" onClick={onCancel}>
           Cancelar clases
+        </button>
+        <button className="action-btn create" onClick={onCreate}>
+          Crear clase
         </button>
       </div>
     </div>
