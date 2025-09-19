@@ -14,7 +14,9 @@ const Signup = () => {
     // La variable para product fue incorporada como REACT_APP_BACKEND_URL
     // en Vercel (settings > Environment Variables).
     const API_URL =
-      process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+      process.env.REACT_APP_BACKEND_URL_RENDER ||
+      process.env.REACT_APP_BACKEND_URL_RAILWAY ||
+      "http://localhost:3001";
     try {
       const response = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
