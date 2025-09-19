@@ -42,6 +42,7 @@ function CreateModal({ onClose, onCreate }) {
       hora,
       estado: "pendiente",
     };*/
+
     const ClaseTraducida = {
       profesor: profesorId,
       alumno: alumnoId,

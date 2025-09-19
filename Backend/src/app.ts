@@ -31,22 +31,25 @@ mongoose.connect(MONGO_URI)
   origin: FRONTEND_URL,
   credentials: true,
 }));*/
+const allowedOrigins = [
+  'http://localhost:3000', // siempre permitido para desarrollo
+  FRONTEND_URL             // el que viene de las variables de entorno (producción)
+];
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'https://academia-olive-beta.vercel.app'
-    ];
+  
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('No permitido por CORS'));
+      callback(new Error('No permitido por CORS' + origin));
     }
   },
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
 
-app.use(express.json());
+app.use(express.json());    
 
 // Rutas de autenticación
 
