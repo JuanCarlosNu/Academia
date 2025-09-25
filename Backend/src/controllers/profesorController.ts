@@ -13,9 +13,13 @@ export const getProfesores = async (req: Request, res: Response) => {
 export const createProfesor = async (req: Request, res: Response) => {
   try {
     const { nombre, email, teléfono } = req.body;
+    
     const nuevoProfesor = new profesor({ nombre, email, teléfono });
+
     await nuevoProfesor.save();
+
     res.status(201).json(nuevoProfesor);
+    
   } catch (error) {
     res.status(500).json({ message: "Error al crear el profesor", error });
   }
