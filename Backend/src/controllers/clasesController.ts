@@ -10,7 +10,11 @@
 
   export const crearClase = async (req:Request, res: Response) => {
     try {
+
+      // Extraer datos del cuerpo de la solicitud
+
       const { fecha, hora, alumno, estado, circuito } = req.body;
+
        // Validar existencia del alumno
 
       const alumnoExiste = await Alumno.findById(alumno);
@@ -20,13 +24,16 @@
 
       // Validar solapamiento (opcional)
       const claseExistente = await Clase.findOne({ fecha, hora, alumno });
+
       if (claseExistente) {
         return res.status(400).json({ error: 'Ya existe una clase para ese alumno en ese horario' });
       }
+
       const nuevaClase = new Clase({ fecha, hora, alumno, estado, circuito });
       await nuevaClase.save();
 
       res.status(201).json(nuevaClase);
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Error al crear la clase' });
@@ -158,6 +165,21 @@
   }
 };
 
+  export const eliminarClase = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
 
-  
+    // Validar existencia de la clase
+    const claseExistente = await Clase.findById(id);
+    if (!claseExistente) {
+      return res.status(404).json({ error: 'Clase no encontrada' });
+    }
 
+    // Eliminar la clase
+    await Clase.findByIdAndDelete(id);
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error al eliminar clase:', error);
+    res.status(500).json({ error: 'Error al eliminar la clase' });
+  }
+};

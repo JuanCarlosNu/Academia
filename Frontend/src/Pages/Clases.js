@@ -2,14 +2,16 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
 import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
-import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
 import MonthView from "../Components/MonthView/MonthView";
 import EditModal from "../Components/EditModal/EditModal";
-import "./Clases.css";
 import CreateModal from "../Components/CreateModal/CreateModal";
+import "./Clases.css";
+
+/* ★ URL de la API según entorno  */
 
 export const API_URL =
   process.env.REACT_APP_BACKEND_URL_RENDER ||
@@ -22,7 +24,7 @@ function Clases() {
   const [classesOfDay, setClassesOfDay] = useState([]);
   const [classesOfWeek, setClassesOfWeek] = useState([]);
   const [selectedClase, setSelectedClase] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const handleCreateClase = () => {
@@ -34,23 +36,25 @@ function Clases() {
 
   const handleClaseCreada = () => {
     //  Recargar la semana actual o el día actual según el rango activo
+
     if (activeRange === "semana") {
       // Reutilizá el efecto que carga la semana
       setCurrentDate(new Date(currentDate)); // fuerza el efecto
     } else if (activeRange === "día") {
       // Recargar el día actual
+
       goToday();
     }
   };
 
   const handleEdit = (clase) => {
     setSelectedClase(clase);
-    setShowModal(true);
+    setShowEditModal(true);
   };
 
   const handleCloseModal = () => {
     setSelectedClase(null);
-    setShowModal(false);
+    setShowEditModal(false);
   };
 
   /* ★ manejar edición de clases */
@@ -68,7 +72,7 @@ function Clases() {
         },
       });
       console.log("Clase actualizada:", res.data);
-      setShowModal(false); // cerrar modal
+      setShowEditModal(false); // cerrar modal
     } catch (err) {
       console.error("Error al editar clase:", err);
     }
@@ -78,7 +82,7 @@ function Clases() {
     if (!window.confirm("¿Seguro que querés cancelar esta clase?")) return;
 
     try {
-      await axios.delete(`/api/clases/${id}`);
+      await axios.delete(`${API_URL}/api/clases/${id}`);
       // Actualizar vista
       setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
@@ -201,7 +205,7 @@ function Clases() {
   /* ★ renderizar */
   return (
     <div className="clases-container">
-      {/* Encabezado 1 */}
+      Encabezado 1{/* Encabezado 1 */}
       <div className="clases-header">
         <h2 className="clases-title">{titleLabel}</h2>
         <div className="view-buttons">
@@ -216,9 +220,7 @@ function Clases() {
           ))}
         </div>
       </div>
-
-      {/* Encabezado 2 */}
-
+      Encabezado 2{/* Encabezado 2 */}
       <DateHeader
         currentDate={currentDate}
         activeRange={activeRange}
@@ -228,9 +230,7 @@ function Clases() {
         onCancel={() => alert("Función cancelar")}
         onCreate={handleCreateClase}
       />
-
       {/* Contenido dinámico */}
-
       {activeRange === "día" && (
         <DayView
           classes={classesOfDay}
@@ -238,18 +238,14 @@ function Clases() {
           onCancel={handleCancel}
         />
       )}
-
       {activeRange === "semana" && (
         <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}
-
       {activeRange === "mes" && (
         <MonthView monthData={[]} onSelectDay={handleSelectDay} />
       )}
-
       {/*Al presionar editar se despliega el modal de edición*/}
-
-      {showModal && (
+      {showEditModal && (
         <EditModal
           clase={selectedClase}
           currentDate={currentDate}
@@ -257,7 +253,6 @@ function Clases() {
           onSave={handleSaveEdit}
         />
       )}
-
       {showCreateModal && (
         <CreateModal
           onClose={handleCloseCreateModal}
