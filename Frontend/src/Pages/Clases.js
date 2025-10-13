@@ -83,8 +83,18 @@ function Clases() {
 
     try {
       await axios.delete(`${API_URL}/api/clases/${id}`);
+
       // Actualizar vista
+
+      setClassesOfWeek((prev) =>
+        prev.map((dia) => ({
+          ...dia,
+          classes: dia.classes.filter((clase) => clase.id !== id),
+        }))
+      );
       setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
+      console.log("Clase cancelada:", id);
+      console.log("Actualización semana:", classesOfWeek);
     } catch (err) {
       console.error("Error al cancelar clase:", err);
       alert("No se pudo cancelar la clase.");
