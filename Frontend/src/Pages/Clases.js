@@ -58,6 +58,17 @@ function Clases() {
   };
 
   /* ★ manejar edición de clases */
+  const actualizarDiaTrasEdicion = (claseEditada, clasesDia) => {
+    return clasesDia.map((c) => (c.id === claseEditada.id ? claseEditada : c));
+  };
+  const actualizarSemanaTrasEdicion = (claseEditada, clasesSemana) => {
+    return clasesSemana.map((dia) => ({
+      ...dia,
+      classes: dia.classes.map((c) =>
+        c.id === claseEditada.id ? claseEditada : c
+      ),
+    }));
+  };
 
   const handleSaveEdit = async (id, data) => {
     console.log("ID recibido para editar:", id);
@@ -71,11 +82,40 @@ function Clases() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Clase actualizada:", res.data);
+      // Actualizar vista
+      console.log("dia antes de editar", classesOfDay);
+
+      const claseNormalizada = {
+        id: res.data.id || res.data._id,
+        student: res.data.alumno?.nombre || "Sin nombre",
+        circuit: res.data.circuito?.nombre || "Sin circuito",
+        time: res.data.hora,
+        estado: res.data.estado,
+        alumnoId: res.data.alumno?._id,
+      };
+
+      setClassesOfWeek((prev) =>
+        actualizarSemanaTrasEdicion(claseNormalizada, prev)
+      );
+
+      setClassesOfDay((prev) =>
+        actualizarDiaTrasEdicion(claseNormalizada, prev)
+      );
+
+      console.log("Clase actualizada:", claseNormalizada);
+      console.log("Actualización día:", classesOfDay);
       setShowEditModal(false); // cerrar modal
     } catch (err) {
       console.error("Error al editar clase:", err);
     }
+  };
+
+  /* ★ manejar cancelación de clases */
+  const actualizarSemanaTrasCancelación = (idClase, clasesSemana) => {
+    return clasesSemana.map((dia) => ({
+      ...dia,
+      classes: dia.classes.filter((clase) => clase.id !== idClase),
+    }));
   };
 
   const handleCancel = async (id) => {
@@ -86,12 +126,7 @@ function Clases() {
 
       // Actualizar vista
 
-      setClassesOfWeek((prev) =>
-        prev.map((dia) => ({
-          ...dia,
-          classes: dia.classes.filter((clase) => clase.id !== id),
-        }))
-      );
+      setClassesOfWeek((prev) => actualizarSemanaTrasCancelación(id, prev));
       setClassesOfDay((prev) => prev.filter((c) => c.id !== id));
       console.log("Clase cancelada:", id);
       console.log("Actualización semana:", classesOfWeek);
