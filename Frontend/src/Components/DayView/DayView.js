@@ -2,7 +2,7 @@
 import React from "react";
 import "./DayView.css";
 
-function DayView({ classes, onEdit, onCancel }) {
+function DayView({ classes, onEdit, onCancel, onCrearClase }) {
   //classes viene del estado en clases clasesOfDay
   console.log("Recibiendo clases en DayView:", classes);
 
@@ -12,30 +12,45 @@ function DayView({ classes, onEdit, onCancel }) {
   //mapea cada clase y muestra alumno circuito y hora, ademas botones para editar y cancelar.
   return (
     <div className="day-view">
-      {classes.map((c) => (
-        <div key={c.id} className="day-row">
-          <div>
-            <p className="student">{c.student}</p>
-            <p className="circuit">{c.circuit}</p>
-          </div>
+      {classes.map(({ time, clase }) => (
+        <div key={time} className="day-row">
+          {clase ? (
+            <>
+              <div>
+                <p className="student">{clase.student}</p>
+                <p className="circuit">{clase.circuit}</p>
+              </div>
 
-          <div className="right">
-            {/* Editar clase: onEdit() está en clases.js llama a handleEdit-> Almacena c
+              <div className="right">
+                {/* Editar clase: onEdit() está en clases.js llama a handleEdit-> Almacena c
             en selectedClase y muestra el modal */}
-            <button
-              onClick={() => {
-                console.log("Clase enviada a editar desde DayView:", c);
-                onEdit(c);
-              }}
-              className="edit-btn"
-            >
-              ✏️
-            </button>
-            <button onClick={() => onCancel(c.id)} className="cancel-btn">
-              ❌
-            </button>
-            <span className="time-badge">{c.time}</span>
-          </div>
+                <button
+                  onClick={() => {
+                    console.log("Clase enviada a editar desde DayView:", clase);
+                    onEdit(clase);
+                  }}
+                  className="edit-btn"
+                >
+                  ✏️
+                </button>
+                <button
+                  onClick={() => onCancel(clase.id)}
+                  className="cancel-btn"
+                >
+                  ❌
+                </button>
+                <span className="time-badge">{clase.time}</span>
+              </div>
+            </>
+          ) : (
+            <div className="empty-slot">
+              <p>Espacio libre</p>
+              <div className="right">
+                <button onClick={() => onCrearClase(time)}>➕ Agendar</button>{" "}
+                <span className="time-badge-empty">{time}</span>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>

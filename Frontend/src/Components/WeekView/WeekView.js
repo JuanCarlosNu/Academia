@@ -5,7 +5,7 @@ import "./WeekView.css";
 function WeekView({ week, onSelectDay }) {
   return (
     <div className="week-grid">
-      {console.log("📅 Semana actual:", week)}
+      {/* console.log("📅 Semana actual:", week)*/}
       {week.map(
         (
           dayObj //aquí nace el objeto dayObj
@@ -21,7 +21,7 @@ function WeekView({ week, onSelectDay }) {
               </span>
               <span>{dayObj.date.getDate()}</span>
             </div>
-            {console.log("el objeto día es:", dayObj)}
+            {/* console.log("el objeto día es:", dayObj) */}
 
             {dayObj.classes.length ? (
               dayObj.classes.map((c) => (

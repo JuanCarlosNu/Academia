@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import "./CreateModal.css";
 import axios from "axios";
 import { API_URL } from "../../Pages/Clases";
+import { HORARIOS_DEL_DIA } from "../../Utils/horarios";
 
-function CreateModal({ onClose, onCreate }) {
+function CreateModal({
+  onClose,
+  onCreate,
+  claseNueva,
+  setClaseNueva,
+  onConfirm,
+  classesOfDay,
+}) {
   const [profesores, setProfesores] = useState([]);
   const [alumnos, setAlumnos] = useState([]);
   const [circuitos, setCircuitos] = useState([]);
-
-  const [profesorId, setProfesorId] = useState("");
-  const [alumnoId, setAlumnoId] = useState("");
-  const [circuitoId, setCircuitoId] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [hora, setHora] = useState("");
 
   useEffect(() => {
     axios.get(`${API_URL}/api/profesores`).then((res) => {
@@ -27,7 +29,13 @@ function CreateModal({ onClose, onCreate }) {
   }, []);
 
   const handleSubmit = async () => {
-    if (!profesorId || !alumnoId || !circuitoId || !fecha || !hora) {
+    if (
+      !claseNueva.profesorId ||
+      !claseNueva.alumnoId ||
+      !claseNueva.circuitoId ||
+      !claseNueva.date ||
+      !claseNueva.time
+    ) {
       alert("Por favor, complete todos los campos.");
       return;
     }
@@ -44,11 +52,11 @@ function CreateModal({ onClose, onCreate }) {
     };*/
 
     const ClaseTraducida = {
-      profesor: profesorId,
-      alumno: alumnoId,
-      circuito: circuitoId,
-      fecha: fecha,
-      hora: hora,
+      profesor: claseNueva.profesorId,
+      alumno: claseNueva.alumnoId,
+      circuito: claseNueva.circuitoId,
+      fecha: claseNueva.date.toISOString().split("T")[0],
+      hora: claseNueva.time,
       estado: "pendiente",
     };
 
@@ -71,14 +79,25 @@ function CreateModal({ onClose, onCreate }) {
       alert("No se pudo crear la clase.");
     }
   };
+  console.log("Clases del día en CreateModal:", classesOfDay);
+  const horariosOcupados = classesOfDay
+    .filter((bloque) => bloque.clase !== null)
+    .map((bloque) => bloque.time);
+  const horariosDisponibles = HORARIOS_DEL_DIA.filter(
+    (hora) => !horariosOcupados.includes(hora)
+  );
+  console.log("Horarios ocupados para nueva clase:", horariosOcupados);
+  console.log("Horarios disponibles para nueva clase:", horariosDisponibles);
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Crear Nueva Clase</h3>
         <label>Profesor:</label>
         <select
-          value={profesorId || ""}
-          onChange={(e) => setProfesorId(e.target.value)}
+          value={claseNueva?.profesorId || ""}
+          onChange={(e) =>
+            setClaseNueva({ ...claseNueva, profesorId: e.target.value })
+          }
         >
           <option value="">Seleccione un profesor</option>
           {profesores.map((profesor) => (
@@ -89,8 +108,10 @@ function CreateModal({ onClose, onCreate }) {
         </select>
         <label>Alumno:</label>
         <select
-          value={alumnoId || ""}
-          onChange={(e) => setAlumnoId(e.target.value)}
+          value={claseNueva?.alumnoId || ""}
+          onChange={(e) =>
+            setClaseNueva({ ...claseNueva, alumnoId: e.target.value })
+          }
         >
           <option value="">Seleccione un alumno</option>
           {alumnos.map((alumno) => (
@@ -101,8 +122,10 @@ function CreateModal({ onClose, onCreate }) {
         </select>
         <label>Circuito:</label>
         <select
-          value={circuitoId || ""}
-          onChange={(e) => setCircuitoId(e.target.value)}
+          value={claseNueva?.circuitoId || ""}
+          onChange={(e) =>
+            setClaseNueva({ ...claseNueva, circuitoId: e.target.value })
+          }
         >
           <option value="">Seleccione un circuito</option>
           {circuitos.map((circuito) => (
@@ -114,15 +137,28 @@ function CreateModal({ onClose, onCreate }) {
         <label>Fecha:</label>
         <input
           type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
+          value={
+            claseNueva?.date ? claseNueva.date.toISOString().split("T")[0] : ""
+          }
+          onChange={(e) =>
+            setClaseNueva({ ...claseNueva, date: new Date(e.target.value) })
+          }
         />
         <label>Hora:</label>
-        <input
-          type="time"
-          value={hora}
-          onChange={(e) => setHora(e.target.value)}
-        />
+        <select
+          value={claseNueva?.time || ""}
+          onChange={(e) =>
+            setClaseNueva({ ...claseNueva, time: e.target.value })
+          }
+        >
+          <option value="">Seleccione un horario</option>
+          {horariosDisponibles.map((hora) => (
+            <option key={hora} value={hora}>
+              {hora}
+            </option>
+          ))}
+        </select>
+
         <button onClick={handleSubmit}>Crear Clase</button>
         <button onClick={onClose}>Cancelar</button>
       </div>

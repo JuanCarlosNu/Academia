@@ -9,6 +9,8 @@ import WeekView from "../Components/WeekView/WeekView";
 import MonthView from "../Components/MonthView/MonthView";
 import EditModal from "../Components/EditModal/EditModal";
 import CreateModal from "../Components/CreateModal/CreateModal";
+import { HORARIOS_DEL_DIA } from "../Utils/horarios";
+import { construirDiaCompleto } from "../Utils/horarios";
 import "./Clases.css";
 
 /* ★ URL de la API según entorno  */
@@ -20,10 +22,11 @@ export const API_URL =
 
 function Clases() {
   const [activeRange, setActiveRange] = useState("semana");
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(new Date()); // currentDate es la fecha mostrada en el encabezado y usada para cargar datos, comienza siendo el día de la fecha
   const [classesOfDay, setClassesOfDay] = useState([]);
   const [classesOfWeek, setClassesOfWeek] = useState([]);
   const [selectedClase, setSelectedClase] = useState(null);
+  const [claseNueva, setClaseNueva] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -31,7 +34,7 @@ function Clases() {
     setShowCreateModal(true); // abre el modal de creación.
   };
   const handleCloseCreateModal = () => {
-    setShowCreateModal(false);
+    setShowCreateModal(false); // Cierra el modal de creación.
   };
 
   const handleClaseCreada = () => {
@@ -40,10 +43,12 @@ function Clases() {
     if (activeRange === "semana") {
       // Reutilizá el efecto que carga la semana
       setCurrentDate(new Date(currentDate)); // fuerza el efecto
+      console.log("Currente day es ahora: ", currentDate);
     } else if (activeRange === "día") {
+      setCurrentDate(new Date(currentDate));
       // Recargar el día actual
-
-      goToday();
+      console.log("semana actualizada tras creación de clase", classesOfWeek);
+      //setActiveRange("semana");
     }
   };
 
@@ -146,15 +151,23 @@ function Clases() {
   /* ★ botón día de la semana desde WeekView forma el dayObj */
 
   const handleSelectDay = (dayObj) => {
-    setCurrentDate(dayObj.date);
-    setClassesOfDay(dayObj.classes);
+    const diaCompleto = construirDiaCompleto(dayObj.classes);
+    setCurrentDate(dayObj.date); // currentDate cambia y pasa a ser la fecha seleccionada.
+    setClassesOfDay(diaCompleto);
     setActiveRange("día");
+    console.log("CurrentDate es:", dayObj.date);
+  };
+  /* ★ crear clase desde la grilla horaria de DayView con el correspondiente horario prefijado*/
+  const handleCrearClase = (hora) => {
+    console.log("Clase a enviar:", claseNueva);
+    setClaseNueva({ time: hora, date: currentDate }); // podés guardar más datos si querés
+    setShowCreateModal(true);
   };
 
   /* ★ “Hoy” */
 
   const goToday = () => {
-    setCurrentDate(new Date());
+    setCurrentDate(new Date()); // establece currentDate al día de hoy
     setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
@@ -183,9 +196,14 @@ function Clases() {
   /* ★ cargar clases de la semana Actual al iniciar */
 
   useEffect(() => {
+    console.log("Cargando semana para fecha:", currentDate);
+
+    //obtengo inicio y fin de semana a partir del día actual
     const { start, end } = getWeekRange(currentDate);
     const isoInicio = start.toISOString().split("T")[0];
     const isoFin = end.toISOString().split("T")[0];
+
+    // construyo la llamada a la API para ese período
 
     const callWeek = `${API_URL}/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
 
@@ -247,6 +265,19 @@ function Clases() {
     }
   }, [selectedClase]);
 
+  useEffect(() => {
+    const diaActual = classesOfWeek.find(
+      (d) =>
+        d.date.toISOString().split("T")[0] ===
+        currentDate.toISOString().split("T")[0]
+    );
+
+    if (diaActual) {
+      const diaCompleto = construirDiaCompleto(diaActual.classes);
+      setClassesOfDay(diaCompleto);
+    }
+  }, [classesOfWeek, currentDate]);
+
   /* ★ renderizar */
   return (
     <div className="clases-container">
@@ -281,6 +312,7 @@ function Clases() {
           classes={classesOfDay}
           onEdit={handleEdit}
           onCancel={handleCancel}
+          onCrearClase={handleCrearClase}
         />
       )}
       {activeRange === "semana" && (
@@ -300,8 +332,11 @@ function Clases() {
       )}
       {showCreateModal && (
         <CreateModal
+          claseNueva={claseNueva}
+          setClaseNueva={setClaseNueva}
           onClose={handleCloseCreateModal}
           onCreate={handleClaseCreada}
+          classesOfDay={classesOfDay}
         />
       )}
     </div>

@@ -25,3 +25,16 @@
   font-size: .8rem;
 }
 .empty-msg { color:#777; }
+
+.time-badge-empty {
+  background: #ccc;
+  color: #333;
+  padding: .25rem .6rem;
+  border-radius: 12px;
+  font-size: .8rem;
+}
+.empty-slot {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
