@@ -80,6 +80,7 @@ function CreateModal({
     }
   };
   console.log("Clases del día en CreateModal:", classesOfDay);
+
   const horariosOcupados = classesOfDay
     .filter((bloque) => bloque.clase !== null)
     .map((bloque) => bloque.time);
@@ -88,6 +89,7 @@ function CreateModal({
   );
   console.log("Horarios ocupados para nueva clase:", horariosOcupados);
   console.log("Horarios disponibles para nueva clase:", horariosDisponibles);
+  console.log("Datos de la nueva clase:", claseNueva);
   return (
     <div className="modal-overlay">
       <div className="modal-content">
