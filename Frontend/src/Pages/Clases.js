@@ -49,6 +49,7 @@ function Clases() {
       // Recargar el día actual
       console.log("semana actualizada tras creación de clase", classesOfWeek);
       //setActiveRange("semana");
+      console.log("clase nueva", claseNueva);
     }
   };
 
@@ -237,10 +238,12 @@ function Clases() {
             classes: dia.classes.map((c) => ({
               id: c.id,
               time: c.time,
-              circuit: c.circuitId,
+              circuit: c.circuit || "Sin circuito",
               student: c.student,
               alumnoId: c.alumnoId,
               estado: c.estado,
+              profesor: c.profesor,
+              profesorId: c.profesorId,
             })),
           };
         });

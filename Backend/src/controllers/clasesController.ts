@@ -5,7 +5,9 @@
   import { IAlumno } from '../models/alumno';
   import { ICircuito } from '../models/circuito'; 
   import { IClase } from '../models/Clases';
-  import { IProfesor } from '../models/profesor';
+  import { IProfesor } from './../models/profesor';
+
+
 
 
   export const crearClase = async (req:Request, res: Response) => {
@@ -13,8 +15,8 @@
 
       // Extraer datos del cuerpo de la solicitud
 
-      const { fecha, hora, alumno, estado, circuito } = req.body;
-
+      const { fecha, hora, alumno, estado, circuito, profesor } = req.body;
+      console.log("Creando clase con datos:", { fecha, hora, alumno, estado, circuito, profesor });
        // Validar existencia del alumno
 
       const alumnoExiste = await Alumno.findById(alumno);
@@ -29,7 +31,7 @@
         return res.status(400).json({ error: 'Ya existe una clase para ese alumno en ese horario' });
       }
 
-      const nuevaClase = new Clase({ fecha, hora, alumno, estado, circuito });
+      const nuevaClase = new Clase({ fecha, hora, alumno, estado, circuito, profesor });
       await nuevaClase.save();
 
       res.status(201).json(nuevaClase);
@@ -55,6 +57,7 @@
   type ClasePoblada = IClase & {
   alumno: IAlumno;
   circuito?: ICircuito;
+  profesor?: IProfesor;
 };
 
   export const getClasesPorSemana = async (req: Request, res: Response) => {
@@ -72,7 +75,9 @@
   fecha: { $gte: desde, $lte: hasta }
 })
   .populate({ path: 'alumno', select: 'nombre apellido' })
-  .populate({ path: 'circuito', select: 'nombre' }) as ClasePoblada[];
+  .populate({ path: 'circuito', select: 'nombre' })
+  .populate({ path: 'profesor', select: 'nombre' }) as ClasePoblada[];
+
     console.log("📅 Clases encontradas:", clasesPorSemana);
 
       const dias = [];
@@ -101,10 +106,13 @@
           fecha: c.fecha,
        alumnoId: c.alumno?._id,
        alumnoName: c.alumno?.nombre || null,
-     circuitoId: c.circuito?.nombre|| null, //aca pedía _id pero lo cambié.
+     circuitoId: c.circuito?._id || null, //aca pedía _id pero lo cambié.
         circuit: typeof c.circuito === 'object' ? c.circuito.nombre : 'Sin circuito',
         student: c.alumno ? `${c.alumno.nombre}` : 'Sin alumno',
-         estado: c.estado
+        estado: c.estado,
+        profesor: c.profesor?.nombre || "sin nombre",
+        profesorId: c.profesor?._id,
+       
      }))        
         });
       }
