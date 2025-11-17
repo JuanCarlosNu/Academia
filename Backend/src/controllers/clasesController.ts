@@ -25,7 +25,7 @@
       }
 
       // Validar solapamiento (opcional)
-      const claseExistente = await Clase.findOne({ fecha, hora, alumno });
+      const claseExistente = await Clase.findOne({ fecha, hora });
 
       if (claseExistente) {
         return res.status(400).json({ error: 'Ya existe una clase para ese alumno en ese horario' });
