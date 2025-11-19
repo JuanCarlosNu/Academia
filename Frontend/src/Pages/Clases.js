@@ -312,6 +312,7 @@ function Clases() {
       {/* Contenido dinámico */}
       {activeRange === "día" && (
         <DayView
+          activeRange={activeRange}
           classes={classesOfDay}
           onEdit={handleEdit}
           onCancel={handleCancel}

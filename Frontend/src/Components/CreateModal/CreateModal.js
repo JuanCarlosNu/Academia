@@ -11,6 +11,7 @@ function CreateModal({
   setClaseNueva,
   onConfirm,
   classesOfDay,
+  activeRange,
 }) {
   const [profesores, setProfesores] = useState([]);
   const [alumnos, setAlumnos] = useState([]);
@@ -85,9 +86,11 @@ function CreateModal({
   const horariosOcupados = classesOfDay
     .filter((bloque) => bloque.clase !== null)
     .map((bloque) => bloque.time);
-  const horariosDisponibles = HORARIOS_DEL_DIA.filter(
-    (hora) => !horariosOcupados.includes(hora)
-  );
+
+  const horariosDisponibles =
+    activeRange === "día"
+      ? HORARIOS_DEL_DIA.filter((hora) => !horariosOcupados.includes(hora))
+      : HORARIOS_DEL_DIA;
   console.log("Horarios ocupados para nueva clase:", horariosOcupados);
   console.log("Horarios disponibles para nueva clase:", horariosDisponibles);
   console.log("Datos de la nueva clase:", claseNueva);
