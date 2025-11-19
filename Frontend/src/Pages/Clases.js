@@ -335,6 +335,7 @@ function Clases() {
       )}
       {showCreateModal && (
         <CreateModal
+          activeRange={activeRange}
           claseNueva={claseNueva}
           setClaseNueva={setClaseNueva}
           onClose={handleCloseCreateModal}

@@ -28,8 +28,8 @@
       const claseExistente = await Clase.findOne({ fecha, hora });
 
       if (claseExistente) {
-        return res.status(400).json({ error: 'Ya existe una clase para ese alumno en ese horario' });
-      }
+        return res.status(400).json({ error: 'Ya existe una clase ese día, en ese horario' });
+      } 
 
       const nuevaClase = new Clase({ fecha, hora, alumno, estado, circuito, profesor });
       await nuevaClase.save();

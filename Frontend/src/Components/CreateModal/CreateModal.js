@@ -75,8 +75,9 @@ function CreateModal({
       onCreate(response.data);
       onClose();
     } catch (error) {
+      const mensajeError = error.response?.data?.error || "no se ";
       console.error("Error al crear la clase:", error);
-      alert("No se pudo crear la clase.");
+      alert(mensajeError);
     }
   };
   console.log("Clases del día en CreateModal:", classesOfDay);
