@@ -33,6 +33,7 @@ function Clases() {
   const handleCreateClase = () => {
     setShowCreateModal(true); // abre el modal de creación.
   };
+
   const handleCloseCreateModal = () => {
     setShowCreateModal(false); // Cierra el modal de creación.
   };
@@ -67,6 +68,7 @@ function Clases() {
   const actualizarDiaTrasEdicion = (claseEditada, clasesDia) => {
     return clasesDia.map((c) => (c.id === claseEditada.id ? claseEditada : c));
   };
+
   const actualizarSemanaTrasEdicion = (claseEditada, clasesSemana) => {
     return clasesSemana.map((dia) => ({
       ...dia,
@@ -142,10 +144,10 @@ function Clases() {
     }
   };
 
-  const dummyDay = [
+  /*const dummyDay = [
     { id: 1, student: "María", circuit: "Circuito 2", time: "14:30" },
     { id: 2, student: "Juan", circuit: "Circuito 1", time: "16:00" },
-  ];
+  ];*/
 
   //const dummyWeek = getDummyWeek(currentDate);
 
@@ -169,7 +171,7 @@ function Clases() {
 
   const goToday = () => {
     setCurrentDate(new Date()); // establece currentDate al día de hoy
-    setClassesOfDay(dummyDay);
+    // setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
 

@@ -7,12 +7,13 @@ function DayView({ classes, onEdit, onCancel, onCrearClase }) {
   const [clasesSeleccionadas, setClasesSeleccionadas] = useState([]);
   const [filtroProfesor, setFiltroProfesor] = useState("");
   const [filtroCircuito, setFiltroCircuito] = useState("");
+
   //classes viene del estado en clases clasesOfDay
   console.log("Recibiendo clases en DayView:", classes);
 
-  if (!classes.length) {
+  /*if (!classes.length) {
     return <p className="empty-msg">No hay clases programadas para este día</p>;
-  }
+  }*/
 
   //mapea cada clase y muestra alumno circuito y hora, ademas botones para editar y cancelar.
   return (
