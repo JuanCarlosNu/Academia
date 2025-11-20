@@ -9,35 +9,42 @@ function WeekView({ week, onSelectDay }) {
       {week.map(
         (
           dayObj //aquí nace el objeto dayObj
-        ) => (
-          <div
-            key={dayObj.date}
-            className="day-col"
-            onClick={() => onSelectDay(dayObj)}
-          >
-            <div className="day-header">
-              <span>
-                {dayObj.date.toLocaleDateString("es-AR", { weekday: "short" })}
-              </span>
-              <span>{dayObj.date.getDate()}</span>
-            </div>
-            {/* console.log("el objeto día es:", dayObj) */}
+        ) => {
+          const esPasada =
+            dayObj.date < new Date(new Date().setHours(0, 0, 0, 0));
 
-            {dayObj.classes.length ? (
-              dayObj.classes.map((c) => (
-                <div key={c.id} className="mini-row">
-                  <div className="mini-top">
-                    <span>{c.time}</span>
-                    <span>{c.circuit}</span>
+          return (
+            <div
+              key={dayObj.date}
+              className={`day-col ${esPasada ? "pasada" : ""}`}
+              onClick={() => onSelectDay(dayObj)}
+            >
+              <div className="day-header">
+                <span>
+                  {dayObj.date.toLocaleDateString("es-AR", {
+                    weekday: "short",
+                  })}
+                </span>
+                <span>{dayObj.date.getDate()}</span>
+              </div>
+              {/* console.log("el objeto día es:", dayObj) */}
+
+              {dayObj.classes.length ? (
+                dayObj.classes.map((c) => (
+                  <div key={c.id} className="mini-row">
+                    <div className="mini-top">
+                      <span>{c.time}</span>
+                      <span>{c.circuit}</span>
+                    </div>
+                    <div className="mini-student">{c.student}</div>
                   </div>
-                  <div className="mini-student">{c.student}</div>
-                </div>
-              ))
-            ) : (
-              <p className="no-class">Sin clases</p>
-            )}
-          </div>
-        )
+                ))
+              ) : (
+                <p className="no-class">Sin clases</p>
+              )}
+            </div>
+          );
+        }
       )}
     </div>
   );

@@ -144,13 +144,6 @@ function Clases() {
     }
   };
 
-  /*const dummyDay = [
-    { id: 1, student: "María", circuit: "Circuito 2", time: "14:30" },
-    { id: 2, student: "Juan", circuit: "Circuito 1", time: "16:00" },
-  ];*/
-
-  //const dummyWeek = getDummyWeek(currentDate);
-
   /* ★ botón día de la semana desde WeekView forma el dayObj */
 
   const handleSelectDay = (dayObj) => {
@@ -160,6 +153,7 @@ function Clases() {
     setActiveRange("día");
     console.log("CurrentDate es:", dayObj.date);
   };
+
   /* ★ crear clase desde la grilla horaria de DayView con el correspondiente horario prefijado*/
   const handleCrearClase = (hora) => {
     console.log("Clase a enviar:", claseNueva);
@@ -171,7 +165,6 @@ function Clases() {
 
   const goToday = () => {
     setCurrentDate(new Date()); // establece currentDate al día de hoy
-    // setClassesOfDay(dummyDay);
     setActiveRange("día");
   };
 
@@ -194,7 +187,11 @@ function Clases() {
   /* ★ título variable o dinámico */
 
   const titleLabel =
-    activeRange === "semana" ? "Semana de:" : "Clases del día:";
+    activeRange === "semana"
+      ? "Semana de:"
+      : activeRange === "mes"
+      ? "Clases del mes:"
+      : "Clases del día:";
 
   /* ★ cargar clases de la semana Actual al iniciar */
 
@@ -319,6 +316,7 @@ function Clases() {
           onEdit={handleEdit}
           onCancel={handleCancel}
           onCrearClase={handleCrearClase}
+          currentDate={currentDate}
         />
       )}
       {activeRange === "semana" && (
