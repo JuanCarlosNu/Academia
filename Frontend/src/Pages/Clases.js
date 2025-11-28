@@ -127,8 +127,6 @@ function Clases() {
   };
 
   const handleCancel = async (id) => {
-    if (!window.confirm("¿Seguro que querés cancelar esta clase?")) return;
-
     try {
       await axios.delete(`${API_URL}/api/clases/${id}`);
 
