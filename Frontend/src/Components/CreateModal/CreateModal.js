@@ -17,6 +17,8 @@ function CreateModal({
   const [alumnos, setAlumnos] = useState([]);
   const [circuitos, setCircuitos] = useState([]);
 
+  console.log("clases of the day en CreateModal:", classesOfDay);
+
   useEffect(() => {
     axios.get(`${API_URL}/api/profesores`).then((res) => {
       setProfesores(res.data);
@@ -91,6 +93,7 @@ function CreateModal({
     activeRange === "día"
       ? HORARIOS_DEL_DIA.filter((hora) => !horariosOcupados.includes(hora))
       : HORARIOS_DEL_DIA;
+
   console.log("Horarios ocupados para nueva clase:", horariosOcupados);
   console.log("Horarios disponibles para nueva clase:", horariosDisponibles);
   console.log("Datos de la nueva clase:", claseNueva);

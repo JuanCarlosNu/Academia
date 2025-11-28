@@ -45,3 +45,27 @@
   display: flex;
   justify-content: space-between;
 }
+.filtros-dia{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.ocupadas {
+  color: white;
+  margin-left: 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+border-radius: 100%;
+background-color:rgb(241, 110, 110);
+padding: 5px;
+}
+.disponibles {
+  color: white;
+  margin-left: 1rem;
+  font-size: .9rem;
+  font-weight: 600;
+  background-color: rgb(32, 178, 32);
+  border-radius: 100%;
+  padding: 5px;
+}
