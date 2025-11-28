@@ -51,3 +51,7 @@
 .mini-student { font-size: .75rem; }
 
 .no-class { font-size: .75rem; color:#777; }
+
+.nodictada{
+  visibility: hidden;
+}
