@@ -16,7 +16,8 @@ function DaySchedule({
   return (
     <div className={`day-schedule ${activeRange}`}>
       {HORARIOS_DEL_DIA.map((hora) => {
-        const clase = classes.find((c) => c.time === hora);
+        const item = classes.find((c) => c.time === hora);
+        const clase = item?.clase;
 
         if (clase) {
           // 🔹 Render de horario ocupado
