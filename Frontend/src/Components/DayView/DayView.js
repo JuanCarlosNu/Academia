@@ -1,9 +1,9 @@
 // src/components/DayView.js
-import React from "react";
-import { useState } from "react";
-import "./DayView.css";
+import React, { useState } from "react";
 import { useHorarios } from "../../Hooks/useHorarios";
 import { HORARIOS_DEL_DIA } from "../../Utils/horarios";
+import DaySchedule from "../DaySchedule/DaySchedule";
+import "./DayView.css";
 
 function DayView({
   classes,
@@ -24,8 +24,14 @@ function DayView({
     "día",
     HORARIOS_DEL_DIA
   );
-  console.log("Cantidad ocupadas:", cantidadOcupadas);
-  console.log("Cantidad disponibles:", cantidadDisponibles);
+  const filteredClasses = classes.filter(({ clase }) => {
+    if (!clase) return true; // mostrar espacios libres
+    const coincideProfesor =
+      !filtroProfesor || clase.profesor === filtroProfesor;
+    const coincideCircuito =
+      !filtroCircuito || clase.circuit === filtroCircuito;
+    return coincideProfesor && coincideCircuito;
+  });
 
   //mapea cada clase y muestra alumno circuito y hora, depués de filtrar
   //además muestra botones/editar
@@ -69,101 +75,16 @@ function DayView({
           <span className="disponibles">{cantidadDisponibles}</span>
         </div>
       </div>
-
-      {classes
-        .filter(({ clase }) => {
-          if (!clase) return true; // mostrar espacios libres
-
-          // se fija si coinciden los filtros
-          const coincideProfesor =
-            !filtroProfesor || clase.profesor === filtroProfesor;
-          const coincideCircuito =
-            !filtroCircuito || clase.circuit === filtroCircuito;
-
-          // devuelve lo correspondiente
-          return coincideProfesor && coincideCircuito;
-        })
-        .map(({ time, clase }) => {
-          //Mira la fecha de hoy.
-          const fechaISO = currentDate.toISOString().slice(0, 10); // "2025-11-10"
-
-          // Verifica si la clase es pasada
-          const esPasada =
-            clase && new Date(`${fechaISO}T${clase.time}`) < new Date();
-          //Verifica si la clase fue dictada
-          const fueDictada = clase?.estado === "completada";
-          // Verifica si el horario está ocupado
-          const ocupada = clase !== null;
-
-          console.log("cantidad clases:", ocupada);
-
-          return (
-            <div key={time} className={`day-row ${esPasada ? "pasada" : ""}`}>
-              {clase ? (
-                <>
-                  <div>
-                    {/* Checkbox para seleccionar clase */}
-                    <input
-                      type="checkbox"
-                      checked={clasesSeleccionadas.includes(clase.id)}
-                      onChange={(e) => {
-                        const id = clase.id;
-                        if (e.target.checked) {
-                          setClasesSeleccionadas([...clasesSeleccionadas, id]);
-                        } else {
-                          setClasesSeleccionadas(
-                            clasesSeleccionadas.filter((c) => c !== id)
-                          );
-                        }
-                      }}
-                    />
-
-                    <p className="student">{clase.student}</p>
-                    <p className="circuit">{clase.circuit}</p>
-                  </div>
-
-                  <div className="right">
-                    {/*indica si la clase ya ha sido dictado renderizando un tick*/}
-                    {fueDictada && <span className="dictada-label">✅ </span>}
-
-                    {/* Editar clase: onEdit() está en clases.js llama a handleEdit-> Almacena c
-            en selectedClase y muestra el modal */}
-                    <button
-                      onClick={() => {
-                        console.log(
-                          "Clase enviada a editar desde DayView:",
-                          clase
-                        );
-                        onEdit(clase);
-                      }}
-                      className="edit-btn"
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      onClick={() => onCancel(clase.id)}
-                      className="cancel-btn"
-                    >
-                      ❌
-                    </button>
-                    <span className="time-badge">{clase.time}</span>
-                  </div>
-                </>
-              ) : (
-                <div className="empty-slot">
-                  {console.log("estamos en la vista :", activeRange)}
-                  <p>Espacio libre</p>
-                  <div className="right">
-                    <button onClick={() => onCrearClase(time)}>
-                      ➕ Agendar
-                    </button>{" "}
-                    <span className="time-badge-empty">{time}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
+      <DaySchedule
+        classes={filteredClasses}
+        currentDate={currentDate}
+        activeRange={activeRange}
+        onEdit={onEdit}
+        onCancel={onCancel}
+        onCrearClase={onCrearClase}
+        clasesSeleccionadas={clasesSeleccionadas}
+        setClasesSeleccionadas={setClasesSeleccionadas}
+      />
 
       {clasesSeleccionadas.length > 0 && (
         <div className="cancel-multiple">

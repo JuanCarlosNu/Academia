@@ -1,6 +1,7 @@
 import React from "react";
 import { HORARIOS_DEL_DIA } from "../../Utils/horarios";
 import { useHorarios } from "../../Hooks/useHorarios";
+import "./DaySchedule.css";
 
 function DaySchedule({
   classes,
@@ -9,36 +10,62 @@ function DaySchedule({
   onEdit,
   onCancel,
   onCrearClase,
+  clasesSeleccionadas = [],
+  setClasesSeleccionadas = () => {},
 }) {
-  const { cantidadOcupadas, cantidadDisponibles } = useHorarios(
-    classes,
-    "día",
-    HORARIOS_DEL_DIA
-  );
-
   return (
     <div className={`day-schedule ${activeRange}`}>
-      {/* Encabezado dinámico */}
-      {activeRange === "día" && (
-        <div className="metrics">
-          <span>Ocupadas: {cantidadOcupadas}</span>
-          <span>Disponibles: {cantidadDisponibles}</span>
-        </div>
-      )}
-
       {HORARIOS_DEL_DIA.map((hora) => {
         const clase = classes.find((c) => c.time === hora);
 
         if (clase) {
           // 🔹 Render de horario ocupado
           if (activeRange === "día") {
+            const fechaISO = currentDate.toISOString().slice(0, 10);
+            const esPasada = new Date(`${fechaISO}T${clase.time}`) < new Date();
+            const fueDictada = clase.estado === "completada";
+
             return (
-              <div key={hora} className="row-full">
-                <p>{clase.student}</p>
-                <p>{clase.circuit}</p>
-                <button onClick={() => onEdit(clase)}>✏️</button>
-                <button onClick={() => onCancel(clase.id)}>❌</button>
-                <span>{clase.time}</span>
+              <div key={hora} className={`day-row ${esPasada ? "pasada" : ""}`}>
+                <input
+                  type="checkbox"
+                  checked={clasesSeleccionadas.includes(clase.id)}
+                  onChange={(e) => {
+                    const id = clase.id;
+                    if (e.target.checked) {
+                      setClasesSeleccionadas([...clasesSeleccionadas, id]);
+                    } else {
+                      setClasesSeleccionadas(
+                        clasesSeleccionadas.filter((c) => c !== id)
+                      );
+                    }
+                  }}
+                />
+                {
+                  console.log(
+                    "Clase renderizada:",
+                    clase,
+                    clase.time,
+                    clase.clase
+                  )
+
+                  //console.log("Clase renderizada:", clase.student, );
+                }
+                <p className="student">{clase.student}</p>
+                <p className="circuit">{clase.circuit}</p>
+                <div className="right">
+                  {fueDictada && <span className="dictada-label">✅</span>}
+                  <button onClick={() => onEdit(clase)} className="edit-btn">
+                    ✏️
+                  </button>
+                  <button
+                    onClick={() => onCancel(clase.id)}
+                    className="cancel-btn"
+                  >
+                    ❌
+                  </button>
+                  <span className="time-badge">{clase.time}</span>
+                </div>
               </div>
             );
           }
