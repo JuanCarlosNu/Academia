@@ -28,32 +28,26 @@ function DaySchedule({
 
             return (
               <div key={hora} className={`day-row ${esPasada ? "pasada" : ""}`}>
-                <input
-                  type="checkbox"
-                  checked={clasesSeleccionadas.includes(clase.id)}
-                  onChange={(e) => {
-                    const id = clase.id;
-                    if (e.target.checked) {
-                      setClasesSeleccionadas([...clasesSeleccionadas, id]);
-                    } else {
-                      setClasesSeleccionadas(
-                        clasesSeleccionadas.filter((c) => c !== id)
-                      );
-                    }
-                  }}
-                />
-                {
-                  console.log(
-                    "Clase renderizada:",
-                    clase,
-                    clase.time,
-                    clase.clase
-                  )
-
-                  //console.log("Clase renderizada:", clase.student, );
-                }
-                <p className="student">{clase.student}</p>
-                <p className="circuit">{clase.circuit}</p>
+                <div className="left">
+                  <input
+                    type="checkbox"
+                    checked={clasesSeleccionadas.includes(clase.id)}
+                    onChange={(e) => {
+                      const id = clase.id;
+                      if (e.target.checked) {
+                        setClasesSeleccionadas([...clasesSeleccionadas, id]);
+                      } else {
+                        setClasesSeleccionadas(
+                          clasesSeleccionadas.filter((c) => c !== id)
+                        );
+                      }
+                    }}
+                  />
+                  <div className="class-info">
+                    <span className="student-name">{clase.student}</span>
+                    <span className="circuit-name">{clase.circuit}</span>
+                  </div>
+                </div>
                 <div className="right">
                   {fueDictada && <span className="dictada-label">✅</span>}
                   <button onClick={() => onEdit(clase)} className="edit-btn">
@@ -95,8 +89,10 @@ function DaySchedule({
             return (
               <div key={hora} className="row-empty">
                 <p>Espacio libre</p>
-                <button onClick={() => onCrearClase(hora)}>➕ Agendar</button>
-                <span>{hora}</span>
+                <div className="right">
+                  <button onClick={() => onCrearClase(hora)}>➕ Agendar</button>
+                  <span>{hora}</span>
+                </div>
               </div>
             );
           }

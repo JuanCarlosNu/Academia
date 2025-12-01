@@ -11,3 +11,14 @@ background-color: aqua;
     border-radius: 4px;
     margin-bottom: 4px;
 }
+.left{
+    display: inherit;
+    align-items: center;
+}
+.class-info{
+    display: flex;
+    flex-direction: column;
+}
+.left input{
+    margin-right: .5rem;
+}
