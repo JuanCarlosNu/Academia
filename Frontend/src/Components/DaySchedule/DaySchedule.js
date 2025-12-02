@@ -13,8 +13,10 @@ function DaySchedule({
   clasesSeleccionadas = [],
   setClasesSeleccionadas = () => {},
 }) {
+  console.log("DaySchedule received classes:", classes);
   return (
     <div className={`day-schedule ${activeRange}`}>
+      {/* Mapea todos los horarios del día y detecta si tienen clases*/}
       {HORARIOS_DEL_DIA.map((hora) => {
         const item = classes.find((c) => c.time === hora);
         const clase = item?.clase;

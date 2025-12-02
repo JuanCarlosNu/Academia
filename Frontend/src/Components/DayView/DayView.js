@@ -17,7 +17,7 @@ function DayView({
   const [filtroProfesor, setFiltroProfesor] = useState("");
   const [filtroCircuito, setFiltroCircuito] = useState("");
   //classes viene del estado en clases.js clasesOfDay
-  console.log("Recibiendo clases en DayView:", classes);
+  console.log("DayView recived classes:", classes);
 
   const { cantidadOcupadas, cantidadDisponibles } = useHorarios(
     classes,
@@ -40,6 +40,7 @@ function DayView({
     <div className="day-view">
       <div className="filtros-dia">
         <label>Filtrar por profesor:</label>
+
         {/*Mapea profesores y toma el nombre único*/}
         <select
           value={filtroProfesor} //estado del filtro
@@ -55,7 +56,9 @@ function DayView({
             ))}
         </select>
         <label>Filtrar por circuito:</label>
+
         {/*Mapea circuitos y toma el nombre único*/}
+
         <select
           value={filtroCircuito} //estado del filtro
           onChange={(e) => setFiltroCircuito(e.target.value)}
@@ -75,6 +78,7 @@ function DayView({
           <span className="disponibles">{cantidadDisponibles}</span>
         </div>
       </div>
+
       <DaySchedule
         classes={filteredClasses}
         currentDate={currentDate}

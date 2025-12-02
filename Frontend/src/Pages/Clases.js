@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import { getWeekRange, normalizeDateLocal } from "../Utils/dateUtils";
+import {
+  getWeekRange,
+  getMonthRange,
+  normalizeDateLocal,
+} from "../Utils/dateUtils";
 import DateHeader from "../Components/DateHeader/DateHeader";
 import DayView from "../Components/DayView/DayView";
 import WeekView from "../Components/WeekView/WeekView";
@@ -25,10 +29,19 @@ function Clases() {
   const [currentDate, setCurrentDate] = useState(new Date()); // currentDate es la fecha mostrada en el encabezado y usada para cargar datos, comienza siendo el día de la fecha
   const [classesOfDay, setClassesOfDay] = useState([]);
   const [classesOfWeek, setClassesOfWeek] = useState([]);
+  const [classesOfMonth, setClassesOfMonth] = useState([]);
   const [selectedClase, setSelectedClase] = useState(null);
   const [claseNueva, setClaseNueva] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+
+  const getClasesByRange = async (startISO, endISO, token) => {
+    const res = await axios.get(`${API_URL}/api/clases`, {
+      params: { start: startISO, end: endISO },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    return res.data; // ajustá al shape de tu backend
+  };
 
   const handleCreateClase = () => {
     setShowCreateModal(true); // abre el modal de creación.
@@ -181,6 +194,26 @@ function Clases() {
     next.setDate(start.getDate() + 7);
     setCurrentDate(next);
   };
+  /* ★ navegar mes */
+  const goPrevMonth = () => {
+    const prev = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      1
+    );
+    setCurrentDate(prev);
+    setActiveRange("mes");
+  };
+
+  const goNextMonth = () => {
+    const next = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      1
+    );
+    setCurrentDate(next);
+    setActiveRange("mes");
+  };
 
   /* ★ título variable o dinámico */
 
@@ -190,6 +223,56 @@ function Clases() {
       : activeRange === "mes"
       ? "Clases del mes:"
       : "Clases del día:";
+
+  /* ★ cargar clases del mes Actual al iniciar */
+
+  useEffect(() => {
+    if (activeRange !== "mes") return;
+
+    console.log("Cargando mes para fecha:", currentDate);
+
+    const { start, end } = getMonthRange(currentDate);
+    const isoInicio = start.toISOString().split("T")[0];
+    const isoFin = end.toISOString().split("T")[0];
+
+    const callMonth = `${API_URL}/api/clases/semana?desde=${isoInicio}&hasta=${isoFin}`;
+    console.log("Llamada a la API (mes):", callMonth);
+
+    axios
+      .get(callMonth)
+      .then((res) => {
+        const answer = res.data;
+        console.log("Respuesta API mes:", answer);
+
+        // Suponiendo que el backend devuelve { rango: {...}, dias: Array(n) }
+        const formatted = answer.dias.map((dia) => {
+          const fechaNormalizada = normalizeDateLocal(dia.date);
+          return {
+            // Devuelve un objeto con la fecha y las clases del día:
+            //Día:
+            date: fechaNormalizada,
+
+            // Clases:[Array(n)]
+            classes: dia.classes.map((c) => ({
+              id: c.id,
+              time: c.time,
+              circuit: c.circuit || "Sin circuito",
+              student: c.student,
+              alumnoId: c.alumnoId,
+              estado: c.estado,
+              profesor: c.profesor,
+              profesorId: c.profesorId,
+            })),
+          };
+        });
+
+        setClassesOfMonth(formatted);
+      })
+      .catch((err) => {
+        console.error("Error al cargar mes:", err);
+        setClassesOfMonth([]);
+      });
+  }, [currentDate, activeRange]);
 
   /* ★ cargar clases de la semana Actual al iniciar */
 
@@ -321,7 +404,7 @@ function Clases() {
         <WeekView week={classesOfWeek} onSelectDay={handleSelectDay} />
       )}
       {activeRange === "mes" && (
-        <MonthView monthData={[]} onSelectDay={handleSelectDay} />
+        <MonthView monthData={classesOfMonth} onSelectDay={handleSelectDay} />
       )}
       {/*Al presionar editar se despliega el modal de edición*/}
       {showEditModal && (
