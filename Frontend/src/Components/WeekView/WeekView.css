@@ -36,14 +36,20 @@
 
 
 /* layout dentro de cada clase mini */
+
 .row-mini {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   border-top: 1px solid #eee;
   padding-top: .4rem;
   margin-top: .4rem;
   font-size: .8rem;
 }
+.row-mini-right {
+  display: flex;
+  gap: .6rem;
+}
+
 /*.row-free {
     display: flex;
     align-items: center;
