@@ -70,9 +70,12 @@ function DaySchedule({
           if (activeRange === "semana") {
             return (
               <div key={hora} className="row-mini">
-                <span>{clase.time}</span>
-                <span>{clase.student}</span>
-                {clase.estado === "completada" ? "✅" : ""}
+                <div className="row-mini-left">
+                  <span>{clase.time}</span>
+                  <span>{clase.student}</span>
+                </div>
+                <span>{clase.circuit}</span>
+                <span> {clase.estado === "completada" ? "✅" : ""}</span>
               </div>
             );
           }
@@ -102,7 +105,7 @@ function DaySchedule({
           if (activeRange === "semana") {
             return (
               <div key={hora} className="row-free">
-                <span className="rayita-verde">▮</span>
+                <span className="rayita-verde"></span>
               </div>
             );
           }

@@ -1,10 +1,18 @@
-.day-schedule  {
-background-color: rgb(228, 238, 238);
-}
+
 .day-schedule {
-    background-color: lightgreen;
 }
-.row-empty{
+.day-header {
+padding-top: .3rem;
+padding-bottom: .3rem;
+border-radius: 4px;}
+
+.row-free{
+    width: 100%;
+    height: 0px;
+    border: 1px solid rgb(211, 237, 211);
+    margin-bottom: 5px;
+}
+/*.row-free {   
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -13,6 +21,16 @@ background-color: rgb(228, 238, 238);
     border: 1px solid #b2ebf2;
     border-radius: 4px;
     margin-bottom: 4px;
+}*/
+.row-empty {
+    background-color: rgb(242, 255, 240);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #d4d4d4;
+    border-top: 1px solid #d4d4d4;
+    border-radius: 4px;
 }
 .left{
     display: inherit;
@@ -30,3 +48,17 @@ background-color: rgb(228, 238, 238);
     font-size: .3rem;
     line-height: 0;
 }
+.day-col-wrapper{
+  padding: .5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+
+}
+.time-badge{
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: .75rem;
+    margin-right: .5rem;
+    font-weight: 500;}
