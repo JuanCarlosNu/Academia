@@ -44,6 +44,23 @@
   margin-top: .4rem;
   font-size: .8rem;
 }
+/*.row-free {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: #e0f7fa;
+    border: 1px solid #b2ebf2;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}*/
+.row-free{
+    width: 60%;
+    height: 0px;
+    border: 1px solid rgb(180, 221, 180);
+    margin-bottom: 5px;
+}
+
 
 .mini-top {
   display: flex;
