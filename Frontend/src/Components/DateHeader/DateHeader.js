@@ -31,6 +31,12 @@ function DateHeader({
     const { start, end } = getWeekRange(currentDate);
     topText = `${formatShort(start)} - ${formatShort(end)}`;
   }
+  if (activeRange === "mes") {
+    topText = currentDate.toLocaleDateString("es-AR", {
+      month: "long",
+      year: "numeric",
+    });
+  }
 
   return (
     <div className="date-shown">
