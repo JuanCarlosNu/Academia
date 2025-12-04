@@ -194,7 +194,9 @@ function Clases() {
     next.setDate(start.getDate() + 7);
     setCurrentDate(next);
   };
+
   /* ★ navegar mes */
+
   const goPrevMonth = () => {
     const prev = new Date(
       currentDate.getFullYear(),
@@ -385,6 +387,8 @@ function Clases() {
         activeRange={activeRange}
         onPrev={goPrevWeek}
         onNext={goNextWeek}
+        onPrevMonth={goPrevMonth}
+        onNextMonth={goNextMonth}
         onToday={goToday}
         onCancel={() => alert("Función cancelar")}
         onCreate={handleCreateClase}

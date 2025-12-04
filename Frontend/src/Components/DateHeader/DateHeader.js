@@ -11,6 +11,8 @@ function DateHeader({
   activeRange,
   onPrev,
   onNext,
+  onPrevMonth,
+  onNextMonth,
 }) {
   const longDate = currentDate.toLocaleDateString("es-AR", {
     weekday: "long",
@@ -24,6 +26,7 @@ function DateHeader({
     month: "long",
     year: "numeric",
   });
+
   if (activeRange === "semana") {
     const { start, end } = getWeekRange(currentDate);
     topText = `${formatShort(start)} - ${formatShort(end)}`;
@@ -37,9 +40,19 @@ function DateHeader({
             ‹
           </button>
         )}
+        {activeRange === "mes" && (
+          <button className="nav-arrow" onClick={onPrevMonth}>
+            ‹
+          </button>
+        )}
         {topText}
         {activeRange === "semana" && (
           <button className="nav-arrow" onClick={onNext}>
+            ›
+          </button>
+        )}
+        {activeRange === "mes" && (
+          <button className="nav-arrow" onClick={onNextMonth}>
             ›
           </button>
         )}
