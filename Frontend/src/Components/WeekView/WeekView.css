@@ -47,8 +47,14 @@
 }
 .row-mini-right {
   display: flex;
-  gap: .6rem;
+  flex-wrap: nowrap;
+  gap: 0;
 }
+.row-mini-left {
+  display: flex;
+  gap: .2rem;
+}
+
 
 /*.row-free {
     display: flex;

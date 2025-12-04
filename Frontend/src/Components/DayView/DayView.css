@@ -30,6 +30,7 @@
   padding: .25rem .6rem;
   border-radius: 12px;
   font-size: .8rem;
+  margin-left: .5rem;
 }
 .empty-msg { color:#777; }
 

@@ -70,11 +70,16 @@ function DaySchedule({
           if (activeRange === "semana") {
             return (
               <div key={hora} className="row-mini">
-                <span>{clase.time}</span>
-                <div className="row-mini-right">
+                <div className="row-mini-left">
+                  <span className="time-badge">{clase.time}</span>
                   <span>{clase.student}</span>
+                </div>
+                <div className="row-mini-right">
                   <span>{clase.circuit}</span>
-                  <span> {clase.estado === "completada" ? "✅" : ""}</span>
+                  <span>
+                    {" "}
+                    {clase.estado === "completada" ? "✅" : " "}
+                  </span>{" "}
                 </div>
               </div>
             );
