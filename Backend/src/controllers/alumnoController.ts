@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export const getAlumnos = async (req: Request, res: Response) => {
   try {
-    const alumnos = await alumno.find();
+    const alumnos = await alumno.find().sort({ createdAt: -1 });
     res.status(200).json(alumnos);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener los alumnos", error });
