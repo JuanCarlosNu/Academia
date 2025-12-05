@@ -12,8 +12,8 @@ export const getAlumnos = async (req: Request, res: Response) => {
 
 export const createAlumno = async (req: Request, res: Response) => {
   try {
-    const { nombre, apellido, teléfono, email, edad } = req.body;
-    const nuevoAlumno = new alumno({ nombre, apellido, teléfono, email, edad });
+    const { nombre, apellido, telefono, email, edad } = req.body;
+    const nuevoAlumno = new alumno({ nombre, apellido, telefono, email, edad });
     await nuevoAlumno.save();
     res.status(201).json(nuevoAlumno);
   } catch (error) {
