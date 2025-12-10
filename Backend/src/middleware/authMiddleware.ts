@@ -22,7 +22,12 @@ export function authenticateToken(req: AuthenticatedRequest, res: Response, next
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    
+    if (!token) {
+  return res.status(401).json({ error: "Token no proporcionado" });
+}
+
+    if (err) return res.sendStatus(403).json({ error: "Token inválido o expirado" });
     req.user = user;
     next();
   });
@@ -30,6 +35,7 @@ export function authenticateToken(req: AuthenticatedRequest, res: Response, next
 
 export function authorizeRoles(roles: string[]) {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({ error: 'No tienes permisos suficientes.' });
     }
