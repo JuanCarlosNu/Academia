@@ -66,23 +66,30 @@ export const deleteAlumno = async (req: Request, res: Response) => {
 };
 
 export const updateClasesRestantes = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { delta } = req.body; // puede ser +1 , -1, +5, etc.
+  try {
+    const { id } = req.params;
+    const { delta } = req.body;
 
-  if (typeof delta !== 'number') {
-    return res.status(400).json({ message: "Delta debe ser un número" });
-  }
-  const alumnoActualizado = await alumno.findByIdAndUpdate(
-    id,
-    { $inc: { clasesRestantes: delta } },
-    { new: true }
-  );
-  if (!alumnoActualizado) {
+    if (typeof delta !== "number") {
+      return res.status(400).json({ message: "Delta debe ser un número" });
+    }
+
+    const alumnoActualizado = await alumno.findByIdAndUpdate(
+      id,
+      { $inc: { clasesRestantes: delta } },
+      { new: true }
+    );
+
+    if (!alumnoActualizado) {
       return res.status(404).json({ message: "Alumno no encontrado" });
     }
 
-    res.status(200).json(alumnoActualizado);
+    return res.status(200).json(alumnoActualizado);
+
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar clases restantes", error });
+    return res.status(500).json({
+      message: "Error al actualizar clases restantes",
+      error,
+    });
   }
 };
