@@ -12,7 +12,8 @@ export const createAlumno = (data) =>
 export const updateAlumno = (id, data) =>
   axios.put(`${API_URL}/api/alumnos/${id}`, data);
 export const patchAlumno = (id, data) =>
-  axios.patch(`/api/alumnos/${id}`, data);
+  axios.patch(`${API_URL}/api/alumnos/${id}`, data);
 export const updateClasesRestantes = (id, delta) =>
-  axios.patch(`/api/alumnos/${id}/clases`, { delta });
-export const deleteAlumno = (id) => axios.delete(`/api/alumnos/${id}`);
+  axios.patch(`${API_URL}/api/alumnos/${id}/clases`, { delta });
+export const deleteAlumno = (id) =>
+  axios.delete(`${API_URL}/api/alumnos/${id}`);
