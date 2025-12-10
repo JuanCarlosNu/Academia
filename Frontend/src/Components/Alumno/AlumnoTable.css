@@ -1,0 +1,55 @@
+/* Tabla base */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+/* Encabezado */
+.table thead th {
+  background: #f4f4f4;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Filas zebra */
+.table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* Hover */
+.table tbody tr:hover {
+  background: #f0f8ff;
+}
+
+/* Celdas */
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Botones dentro de la tabla */
+.table button {
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.table .btn-edit {
+  background: #0275d8;
+  color: white;
+}
+
+.table .btn-delete {
+  background: #d9534f;
+  color: white;
+}
+
+.table button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,9 +1,9 @@
 // src/features/alumnos/components/AlumnoTable.tsx
 import React from "react";
-
-export default function AlumnoTable({ alumnos, onEdit, onDelete }) {
+import "./AlumnoTable.css";
+export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
   return (
-    <table className="tabla-alumnos">
+    <table className="table">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -24,8 +24,16 @@ export default function AlumnoTable({ alumnos, onEdit, onDelete }) {
             <td>{a.email}</td>
             <td>{a.clases_restantes}</td>
             <td>
-              <button onClick={() => onEdit(a)}>Editar</button>
-              <button onClick={() => onDelete(a._id)}>Eliminar</button>
+              <button className="btn-edit" onClick={() => onEdit(a)}>
+                Editar
+              </button>
+              <button
+                className="btn-delete"
+                onClick={() => onDelete(a._id)}
+                disabled={deleting}
+              >
+                {deleting ? "Eliminando..." : "Eliminar"}
+              </button>
             </td>
           </tr>
         ))}
