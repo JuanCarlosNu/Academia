@@ -1,16 +1,36 @@
 // src/components/Alumnos/AlumnoForm.js
 import React, { useState } from "react";
+import "./AlumnoForm.css";
+import { useEffect } from "react";
 
-export default function AlumnoForm({ initialData, onSubmit }) {
-  const [form, setForm] = useState(
-    initialData || {
-      nombre: "",
-      apellido: "",
-      telefono: "",
-      email: "",
-      edad: "",
+export default function AlumnoForm({ initialData, onSubmit, saving }) {
+  console.log("AlumnoForm rendered with initialData:", initialData);
+  const [form, setForm] = useState({
+    nombre: "",
+    apellido: "",
+    telefono: "",
+    email: "",
+    edad: "",
+  });
+  useEffect(() => {
+    if (initialData) {
+      setForm({
+        nombre: initialData.nombre || "",
+        apellido: initialData.apellido || "",
+        telefono: initialData.telefono || "",
+        email: initialData.email || "",
+        edad: initialData.edad || "",
+      });
+    } else {
+      setForm({
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        email: "",
+        edad: "",
+      });
     }
-  );
+  }, [initialData]);
 
   const [errors, setErrors] = useState({});
 
@@ -46,8 +66,9 @@ export default function AlumnoForm({ initialData, onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="alumno-form">
-      <div>
+    <form onSubmit={handleSubmit} className="alumno-form inline-form">
+      <div className="form-group">
+        <label>Nombre:</label>
         <input
           name="nombre"
           value={form.nombre}
@@ -57,7 +78,8 @@ export default function AlumnoForm({ initialData, onSubmit }) {
         {errors.nombre && <p className="error">{errors.nombre}</p>}
       </div>
 
-      <div>
+      <div className="form-group">
+        <label>Apellido:</label>
         <input
           name="apellido"
           value={form.apellido}
@@ -67,7 +89,8 @@ export default function AlumnoForm({ initialData, onSubmit }) {
         {errors.apellido && <p className="error">{errors.apellido}</p>}
       </div>
 
-      <div>
+      <div className="form-group">
+        <label>Teléfono:</label>
         <input
           name="telefono"
           value={form.telefono}
@@ -76,7 +99,8 @@ export default function AlumnoForm({ initialData, onSubmit }) {
         />
       </div>
 
-      <div>
+      <div className="form-group">
+        <label>Email:</label>
         <input
           name="email"
           value={form.email}
@@ -86,7 +110,8 @@ export default function AlumnoForm({ initialData, onSubmit }) {
         {errors.email && <p className="error">{errors.email}</p>}
       </div>
 
-      <div>
+      <div className="form-group">
+        <label>Edad:</label>
         <input
           name="edad"
           value={form.edad}
@@ -96,7 +121,9 @@ export default function AlumnoForm({ initialData, onSubmit }) {
         {errors.edad && <p className="error">{errors.edad}</p>}
       </div>
 
-      <button type="submit">{initialData ? "Actualizar" : "Crear"}</button>
+      <button className="btn-submit" disabled={saving}>
+        {saving ? "guardando.." : initialData ? "Actualizar" : "Crear"}
+      </button>
     </form>
   );
 }
