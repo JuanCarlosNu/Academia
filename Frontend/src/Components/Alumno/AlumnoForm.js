@@ -4,6 +4,8 @@ import "./AlumnoForm.css";
 import { useEffect } from "react";
 
 export default function AlumnoForm({ initialData, onSubmit, saving }) {
+  const role = localStorage.getItem("role");
+  console.log("Role from localStorage:", role);
   console.log("AlumnoForm rendered with initialData:", initialData);
   const [form, setForm] = useState({
     nombre: "",
@@ -121,9 +123,11 @@ export default function AlumnoForm({ initialData, onSubmit, saving }) {
         {errors.edad && <p className="error">{errors.edad}</p>}
       </div>
 
-      <button className="btn-submit" disabled={saving}>
-        {saving ? "guardando.." : initialData ? "Actualizar" : "Crear"}
-      </button>
+      {role === "admin" && (
+        <button className="btn-submit" disabled={saving}>
+          {saving ? "guardando.." : initialData ? "Actualizar" : "Crear"}
+        </button>
+      )}
     </form>
   );
 }

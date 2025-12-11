@@ -2,6 +2,7 @@
 import React from "react";
 import "./AlumnoTable.css";
 export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
+  const role = localStorage.getItem("role");
   return (
     <table className="table">
       <thead>
@@ -24,16 +25,20 @@ export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
             <td>{a.email}</td>
             <td>{a.clases_restantes}</td>
             <td>
-              <button className="btn-edit" onClick={() => onEdit(a)}>
-                Editar
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => onDelete(a._id)}
-                disabled={deleting}
-              >
-                {deleting ? "Eliminando..." : "Eliminar"}
-              </button>
+              {role === "admin" && (
+                <button className="btn-edit" onClick={() => onEdit(a)}>
+                  Editar
+                </button>
+              )}
+              {role === "admin" && (
+                <button
+                  className="btn-delete"
+                  onClick={() => onDelete(a._id)}
+                  disabled={deleting}
+                >
+                  {deleting ? "Eliminando..." : "Eliminar"}
+                </button>
+              )}
             </td>
           </tr>
         ))}
