@@ -56,7 +56,8 @@ class AuthController {
       }
 
       const token = jwt.sign(
-        { id: user._id, username: user.username, role: user.role },
+        { id: user._id, 
+          username: user.username, role: user.role },
         JWT_SECRET,
         { expiresIn: '2h' }
       );
