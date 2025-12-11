@@ -28,6 +28,7 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        localStorage.setItem("role", data.usuario.rol);
         // Redirige al dashboard o página principal
         window.location.href = "/dashboard";
       } else {
