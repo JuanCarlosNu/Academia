@@ -1,13 +1,15 @@
 import express  from "express";
-import { getAlumnos, createAlumno, getAlumnoById, updateAlumno, deleteAlumno, updateClasesRestantes } from './../controllers/alumnoController';
+import { getAlumnos,
+     createAlumno, getAlumnoById, updateAlumno, deleteAlumno, 
+     updateClasesRestantes } from './../controllers/alumnoController';
+import { authenticateToken, authorizeRoles } from "../middleware/authMiddleware";
  
 const router = express.Router();
 
-router.get('/', getAlumnos);
-router.post('/', createAlumno);
+router.get('/', authenticateToken, authorizeRoles(['admin', 'user', 'alumno']), getAlumnos);
+router.post('/', authenticateToken, authorizeRoles(['admin']), createAlumno);
 router.get('/:id', getAlumnoById);
-router.put('/:id', updateAlumno);
-router.delete('/:id', deleteAlumno); 
-router.patch('/:id', updateClasesRestantes);   
-
+router.put('/:id', authenticateToken, authorizeRoles(['admin']), updateAlumno);
+router.delete('/:id', authenticateToken, authorizeRoles(['admin']), deleteAlumno); 
+router.patch('/:id', authenticateToken, authorizeRoles(['admin']), updateClasesRestantes);   
 export default router;
