@@ -1,5 +1,19 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
+
+export default function PrivateRoute({ children, roles }) {
+  const { user } = useAuth();
+
+  if (!user) return <Navigate to="/login" />;
+
+  if (roles && !roles.includes(user.rol)) {
+    return <Navigate to="/unauthorized" />;
+  }
+
+  return children;
+}
 
 const PrivateRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem("token");
@@ -15,5 +29,3 @@ const PrivateRoute = ({ children, allowedRoles }) => {
 
   return children;
 };
-
-export default PrivateRoute;
