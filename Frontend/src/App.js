@@ -22,7 +22,7 @@ function App() {
           path="/alumos"
           element={
             <PrivateRoute roles={["admin", "user", "alumno"]}>
-              <AlumnosPage />
+              <Alumnos />
             </PrivateRoute>
           }
         />
