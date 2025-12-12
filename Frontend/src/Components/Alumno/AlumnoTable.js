@@ -1,8 +1,9 @@
 // src/features/alumnos/components/AlumnoTable.tsx
 import React from "react";
 import "./AlumnoTable.css";
+import { useAuth } from "../../Context/AuthContext";
 export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
-  const role = localStorage.getItem("role");
+  const { user } = useAuth();
   return (
     <table className="table">
       <thead>
@@ -25,12 +26,12 @@ export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
             <td>{a.email}</td>
             <td>{a.clases_restantes}</td>
             <td>
-              {role === "admin" && (
+              {user && user.rol === "admin" && (
                 <button className="btn-edit" onClick={() => onEdit(a)}>
                   Editar
                 </button>
               )}
-              {role === "admin" && (
+              {user && user.rol === "admin" && (
                 <button
                   className="btn-delete"
                   onClick={() => onDelete(a._id)}
