@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext, useAuth } from "../Context/AuthContext";
 import "./Login.css";
 
 const Login = () => {
@@ -7,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,11 +28,9 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("usuario", JSON.stringify(data.usuario));
-        localStorage.setItem("role", data.usuario.rol);
+        login(data.usuario, data.token);
         // Redirige al dashboard o página principal
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       } else {
         setError(data.error || "Error al iniciar sesión");
       }
