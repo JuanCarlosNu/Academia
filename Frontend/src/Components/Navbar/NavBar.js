@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./NavBar.css";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
+
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -15,6 +17,7 @@ const NavBar = () => {
     localStorage.removeItem("usuario");
     navigate("/login");
   };
+  const { logout } = useAuth();
 
   return (
     <header>
@@ -42,7 +45,7 @@ const NavBar = () => {
               <NavLink to="/pagos">Pagos</NavLink>
             </li>
             <li>
-              <button onClick={handleLogout} className="logout-btn">
+              <button onClick={logout} className="logout-btn">
                 Logout
               </button>
             </li>
