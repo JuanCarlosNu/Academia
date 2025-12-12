@@ -12,11 +12,11 @@ const NavBar = () => {
   };
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  /*const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("usuario");
     navigate("/login");
-  };
+  };*/
   const { logout } = useAuth();
 
   return (
