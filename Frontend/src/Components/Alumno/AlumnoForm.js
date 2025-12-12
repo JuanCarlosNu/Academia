@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import "./AlumnoForm.css";
 import { useEffect } from "react";
+import { useAuth } from "../../Context/AuthContext";
 
 export default function AlumnoForm({ initialData, onSubmit, saving }) {
-  const role = localStorage.getItem("role");
+  const { user } = useAuth();
   console.log("Role from localStorage:", role);
   console.log("AlumnoForm rendered with initialData:", initialData);
   const [form, setForm] = useState({
@@ -123,7 +124,7 @@ export default function AlumnoForm({ initialData, onSubmit, saving }) {
         {errors.edad && <p className="error">{errors.edad}</p>}
       </div>
 
-      {role === "admin" && (
+      {user?.rol === "admin" && (
         <button className="btn-submit" disabled={saving}>
           {saving ? "guardando.." : initialData ? "Actualizar" : "Crear"}
         </button>
