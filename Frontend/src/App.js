@@ -17,7 +17,15 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/alumos" element={<Alumnos />} />
+
+        <Route
+          path="/alumos"
+          element={
+            <PrivateRoute roles={["admin", "user", "alumno"]}>
+              <AlumnosPage />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/DashBoard"
           element={
