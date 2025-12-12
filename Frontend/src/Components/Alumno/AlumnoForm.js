@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/AuthContext";
 
 export default function AlumnoForm({ initialData, onSubmit, saving }) {
   const { user } = useAuth();
-  console.log("Role from localStorage:", role);
+  console.log("Role from localStorage:", user?.role);
   console.log("AlumnoForm rendered with initialData:", initialData);
   const [form, setForm] = useState({
     nombre: "",
