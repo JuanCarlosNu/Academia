@@ -2,7 +2,13 @@
 import React from "react";
 import "./AlumnoTable.css";
 import { useAuth } from "../../Context/AuthContext";
-export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
+export default function AlumnoTable({
+  alumnos,
+  onEdit,
+  onDelete,
+  deleting,
+  onSort,
+}) {
   const { user } = useAuth();
   return (
     <table className="table">
@@ -14,6 +20,9 @@ export default function AlumnoTable({ alumnos, onEdit, onDelete, deleting }) {
           <th>Clases restantes</th>
           <th>Acciones</th>
         </tr>
+        <th onClick={() => onSort("nombre")}>Nombre</th>
+        <th onClick={() => onSort("apellido")}>Apellido</th>
+        <th onClick={() => onSort("email")}>Email</th>
       </thead>
 
       <tbody>

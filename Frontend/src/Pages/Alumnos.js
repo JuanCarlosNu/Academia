@@ -25,7 +25,38 @@ export default function AlumnosPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
+  //Estados búsqueda y filtro
+  const [search, setSearch] = useState("");
+  const [sortField, setSortField] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  //  ✅ filtrado en tiempo real con prevent null errors
+  const filteredAlumnos = alumnos.filter((alumno) => {
+    const nombre = alumno.nombre?.toLowerCase() || "";
+    const apellido = alumno.apellido?.toLowerCase() || "";
+    const email = alumno.email?.toLowerCase() || "";
+    const query = search.toLowerCase();
+
+    return (
+      nombre.includes(query) ||
+      apellido.includes(query) ||
+      email.includes(query)
+    );
+  });
+  // ✅ Ordenamiento dinámico
+  const sortedAlumnos = [...filteredAlumnos].sort((a, b) => {
+    if (!sortField) return 0;
+
+    const valueA = a[sortField]?.toString().toLowerCase();
+    const valueB = b[sortField]?.toString().toLowerCase();
+
+    if (valueA < valueB) return sortOrder === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortOrder === "asc" ? 1 : -1;
+    return 0;
+  });
+
   const handleCreate = (data) => createAlumno(data);
+
   const handleUpdate = (data) => {
     updateAlumno(editing._id, data);
     setEditing(null);
@@ -51,6 +82,15 @@ export default function AlumnosPage() {
     setConfirmOpen(false);
     setPendingDeleteId(null);
   };
+  // Sort function
+  const handleSort = (field) => {
+    if (sortField === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortOrder("asc");
+    }
+  };
 
   if (loading) return <p>Cargando alumnos...</p>;
 
@@ -70,9 +110,17 @@ export default function AlumnosPage() {
       ) : (
         <AlumnoForm onSubmit={handleCreate} saving={saving} />
       )}
+      <input
+        type="text"
+        placeholder="Buscar alumno..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="search-input"
+      />
 
       <AlumnoTable
-        alumnos={alumnos}
+        onSort={handleSort}
+        alumnos={sortedAlumnos}
         onEdit={(a) => {
           setEditing(a);
         }}
