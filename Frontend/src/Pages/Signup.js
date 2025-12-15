@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 import "./Signup.css";
 
 const Signup = () => {
@@ -7,28 +8,28 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    // La variable para product fue incorporada como REACT_APP_BACKEND_URL
-    // en Vercel (settings > Environment Variables).
+
     const API_URL =
       process.env.REACT_APP_BACKEND_URL_RENDER ||
       process.env.REACT_APP_BACKEND_URL_RAILWAY ||
       "http://localhost:3001";
+
     try {
       const response = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+
       const data = await response.json();
-      console.log("Usuario registrado:", data);
+
       if (response.ok) {
-        console.log("Registro exitoso:", data);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("usuario", JSON.stringify(data.usuario));
+        login(data.usuario, data.token); // ✅ usar AuthContext
         navigate("/dashboard");
       } else {
         setError(data.error || "Error al registrarse");
@@ -51,6 +52,7 @@ const Signup = () => {
             required
           />
         </div>
+
         <div>
           <label>Contraseña:</label>
           <input
@@ -60,9 +62,12 @@ const Signup = () => {
             required
           />
         </div>
+
         {error && <div style={{ color: "red" }}>{error}</div>}
+
         <button type="submit">Registrarse</button>
       </form>
+
       <p>
         ¿Ya tenés cuenta?
         <button onClick={() => navigate("/login")}>Iniciar sesión</button>
@@ -70,5 +75,4 @@ const Signup = () => {
     </div>
   );
 };
-
 export default Signup;
