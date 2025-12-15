@@ -25,7 +25,8 @@ class AuthController {
         passwordHash,
         role: role || 'admin',
       });
-
+      console.log('Role recibido en signup:', role);
+      console.log('Nuevo usuario creado:', newUser.role);
       await newUser.save();
 
       const token = jwt.sign({ id: newUser._id, role: newUser.role }, JWT_SECRET);
