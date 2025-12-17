@@ -93,3 +93,30 @@ export const updateClasesRestantes = async (req: Request, res: Response) => {
     });
   }
 };
+
+/*export const getClasesRestantes = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar pagos del alumno
+    const pagos = await Pago.find({ id_alumno: id });
+    const clasesPagadas = pagos.reduce(
+      (total: number, pago:any) => total + (pago.cantidad_clases_pagadas || 0),
+      0
+    );
+
+    // Contar clases reservadas o completadas
+    const clasesUsadas = await Clase.countDocuments({
+      id_alumno: id,
+      estado: { $in: ["reservada", "completada"] },
+    });
+
+    const clasesRestantes = clasesPagadas - clasesUsadas;
+
+    res.json({ clases_restantes: clasesRestantes });
+  } catch (error) {
+    console.error("Error al calcular clases restantes:", error);
+    res.status(500).json({ error: "Error al calcular clases restantes" });
+  }
+};
+ */ 

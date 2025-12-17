@@ -13,4 +13,5 @@ router.put('/:id', editarClase);
 router.delete('/:id', eliminarClase);
 
 
+
 export default router;
