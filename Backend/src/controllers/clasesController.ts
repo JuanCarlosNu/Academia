@@ -191,3 +191,27 @@
     res.status(500).json({ error: 'Error al eliminar la clase' });
   }
 };
+
+export const getProximaClaseDeAlumno = async (req: Request, res: Response) => {
+  try {
+    const { idAlumno } = req.params;
+
+    const proximaClase = await Clase.findOne({
+      alumno: idAlumno,
+      fecha: { $gte: new Date().toISOString().slice(0, 10) }
+    })
+      .sort({ fecha: 1, hora: 1 })
+      .populate("alumno")
+      .populate("profesor")
+      .populate("circuito");
+
+    if (!proximaClase) {
+      return res.status(404).json({ mensaje: "El alumno no tiene clases futuras" });
+    }
+
+    res.json(proximaClase);
+  } catch (error) {
+    console.error("Error al obtener próxima clase:", error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+};

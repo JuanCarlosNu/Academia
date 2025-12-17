@@ -3,6 +3,7 @@ import "./CreateModal.css";
 import axios from "axios";
 import { API_URL } from "../../Pages/Clases";
 import { HORARIOS_DEL_DIA } from "../../Utils/horarios";
+import api from "../../Utils/api";
 
 function CreateModal({
   onClose,
@@ -23,7 +24,7 @@ function CreateModal({
     axios.get(`${API_URL}/api/profesores`).then((res) => {
       setProfesores(res.data);
     });
-    axios.get(`${API_URL}/api/alumnos`).then((res) => {
+    api.get("/alumnos").then((res) => {
       setAlumnos(res.data);
     });
     axios.get(`${API_URL}/api/circuitos`).then((res) => {

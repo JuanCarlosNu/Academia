@@ -1,9 +1,10 @@
 // src/features/alumnos/pages/AlumnosPage.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAlumnos } from "../Hooks/useAlumnos";
 import AlumnoForm from "../Components/Alumno/AlumnoForm";
 import AlumnoTable from "../Components/Alumno/AlumnoTable";
 import ConfirmModal from "../Components/ConfirmdelModal/ConfirmModal";
+import api from "../Utils/api";
 
 export default function AlumnosPage() {
   const {
@@ -29,9 +30,49 @@ export default function AlumnosPage() {
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [alumnosConProximaClase, setAlumnosConProximaClase] = useState([]);
+
+  // ✅ Obtener próxima clase de cada alumno
+
+  useEffect(() => {
+    const fetchProximasClases = async () => {
+      if (!alumnos || alumnos.length === 0) return;
+
+      try {
+        const alumnosExtendidos = await Promise.all(
+          alumnos.map(async (alumno) => {
+            try {
+              const res = await api.get(`/alumnos/${alumno._id}/proxima-clase`);
+              console.log("Proxima clase de", alumno.nombre, res.data);
+              return { ...alumno, proximaClase: res.data };
+            } catch (error) {
+              console.warn(
+                "Alumno sin próxima clase o error:",
+                alumno.nombre,
+                error.response?.status
+              );
+
+              return { ...alumno, proximaClase: null };
+            }
+          })
+        );
+        console.log("alumnosExtendidos", alumnosExtendidos);
+        setAlumnosConProximaClase(alumnosExtendidos);
+      } catch (error) {
+        console.error("Error obteniendo próximas clases:", error);
+      }
+    };
+
+    fetchProximasClases();
+  }, [alumnos]);
+
+  // ✅ Elegimos el array base para filtro+sort
+  console.log("alumnosConProximaClase:", alumnosConProximaClase);
+  const baseAlumnos =
+    alumnosConProximaClase.length > 0 ? alumnosConProximaClase : alumnos;
 
   //  ✅ filtrado en tiempo real con prevent null errors
-  const filteredAlumnos = alumnos.filter((alumno) => {
+  const filteredAlumnos = baseAlumnos.filter((alumno) => {
     const nombre = alumno.nombre?.toLowerCase() || "";
     const apellido = alumno.apellido?.toLowerCase() || "";
     const email = alumno.email?.toLowerCase() || "";
@@ -44,6 +85,8 @@ export default function AlumnosPage() {
     );
   });
   // ✅ Ordenamiento dinámico
+  // ✅ Sort (se aplica sobre el mismo array que usás en la tabla)
+
   const sortedAlumnos = [...filteredAlumnos].sort((a, b) => {
     if (!sortField) return 0;
 

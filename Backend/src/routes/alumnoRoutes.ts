@@ -3,6 +3,7 @@ import { getAlumnos,
      createAlumno, getAlumnoById, updateAlumno, deleteAlumno, 
      updateClasesRestantes } from './../controllers/alumnoController';
 import { authenticateToken, authorizeRoles } from "../middleware/authMiddleware";
+import { getProximaClaseDeAlumno } from "../controllers/clasesController";
  
 const router = express.Router();
 
@@ -12,4 +13,5 @@ router.get('/:id', getAlumnoById);
 router.put('/:id', authenticateToken, authorizeRoles(['admin']), updateAlumno);
 router.delete('/:id', authenticateToken, authorizeRoles(['admin']), deleteAlumno); 
 router.patch('/:id', authenticateToken, authorizeRoles(['admin']), updateClasesRestantes);   
+router.get("/:idAlumno/proxima-clase", getProximaClaseDeAlumno);
 export default router;
