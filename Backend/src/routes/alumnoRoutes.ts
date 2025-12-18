@@ -14,7 +14,7 @@ router.get('/:id', getAlumnoById);
 router.put('/:id', authenticateToken, authorizeRoles(['admin']), updateAlumno);
 router.delete('/:id', authenticateToken, authorizeRoles(['admin']), deleteAlumno); 
 router.patch('/:id', authenticateToken, authorizeRoles(['admin']), updateClasesRestantes);   
-router.get("/:id/Alumno/proxima-clase", getProximaClaseDeAlumno);
+router.get("/:id/proxima-clase", getProximaClaseDeAlumno);
 //router.get("/:id/clases-restantes", getClasesRestantes);
 
 
