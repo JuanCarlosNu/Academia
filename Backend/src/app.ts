@@ -8,7 +8,7 @@ import clasesRoutes from './routes/clases';
 import profesorRoutes from './routes/profesorRoutes';
 import alumnoRoutes from './routes/alumnoRoutes';
 import circuitoRoutes from './routes/circuitoRoutes';
-
+import pagoRoutes from './routes/pagoRoutes';
 dotenv.config();
 
 // Inicializar la aplicación Express
@@ -62,6 +62,7 @@ app.use('/api/clases', clasesRoutes);
 app.use('/api/profesores', profesorRoutes);
 app.use('/api/alumnos', alumnoRoutes);
 app.use('/api/circuitos', circuitoRoutes);
+app.use('/api/pagos', pagoRoutes);
 
 
 
