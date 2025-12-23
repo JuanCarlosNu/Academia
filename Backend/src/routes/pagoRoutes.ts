@@ -1,5 +1,5 @@
 import express from "express";
-import { createPago } from "../controllers/pagoController";
+import { createPago, deletePago, getPagosByAlumno } from "../controllers/pagoController";
 import { authenticateToken, authorizeRoles } from "../middleware/authMiddleware";
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 //Crear un nuevo pago
 
 router.post('/', authenticateToken, authorizeRoles(['admin']), createPago);
-
+router.get('/:idAlumno', authenticateToken, authorizeRoles(['admin']), getPagosByAlumno);
+router.delete('/:idPago', authenticateToken, authorizeRoles(['admin']), deletePago);
 
 export default router;

@@ -33,3 +33,13 @@ export const getPagosByAlumno = async (req: Request, res: Response) => {
             return res.status(500).json({ error: "Error al obtener pagos" });
         }
 };
+export const deletePago = async (req: Request, res: Response) => {
+    try{
+        const {idPago} = req.params;
+        await Pago.findByIdAndDelete(idPago);
+        return res.status(200).json({message: "Pago eliminado correctamente"});
+    }catch(error){
+        console.error("Error al eliminar pago:", error);
+        return res.status(500).json({error: "Error al eliminar pago"});
+    }
+};
