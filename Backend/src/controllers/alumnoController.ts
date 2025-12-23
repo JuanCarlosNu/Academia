@@ -1,5 +1,8 @@
+//import { getClasesRestantes } from './alumnoController';
 import alumno from "../models/alumno";
 import { Request, Response } from "express";
+import pago from '../models/pago';
+import Clases from '../models/Clases';
 
 export const getAlumnos = async (req: Request, res: Response) => {
   try {
@@ -94,29 +97,20 @@ export const updateClasesRestantes = async (req: Request, res: Response) => {
   }
 };
 
-/*export const getClasesRestantes = async (req: Request, res: Response) => {
+export const getClasesRestantes = async (req: Request, res: Response) => {
+
   try {
     const { id } = req.params;
+    const pagos = await pago.find({ alumno: id});
+    const totalPagadas = pagos.reduce( (acc, pago) => acc + pago.cantidad_clases_pagadas, 0);
 
-    // Buscar pagos del alumno
-    const pagos = await Pago.find({ id_alumno: id });
-    const clasesPagadas = pagos.reduce(
-      (total: number, pago:any) => total + (pago.cantidad_clases_pagadas || 0),
-      0
-    );
+    const clasesUsadas = await Clases.countDocuments({alumno: id, estado: { $in: ["reservada", "completada"] }});
 
-    // Contar clases reservadas o completadas
-    const clasesUsadas = await Clase.countDocuments({
-      id_alumno: id,
-      estado: { $in: ["reservada", "completada"] },
-    });
+    const clasesRestantes = totalPagadas - clasesUsadas;
 
-    const clasesRestantes = clasesPagadas - clasesUsadas;
-
-    res.json({ clases_restantes: clasesRestantes });
+    return res.json({ clasesRestantes });
   } catch (error) {
-    console.error("Error al calcular clases restantes:", error);
-    res.status(500).json({ error: "Error al calcular clases restantes" });
+    console.error("Error al obtener clases restantes:", error);
+    return res.status(500).json({ message: "Error al obtener clases restantes", error });
   }
 };
- */ 
