@@ -43,3 +43,13 @@ export const deletePago = async (req: Request, res: Response) => {
         return res.status(500).json({error: "Error al eliminar pago"});
     }
 };
+export const updatePago = async (req: Request, res: Response) => {
+  try {
+    const { idPago } = req.params;
+    const updatedPago = await Pago.findByIdAndUpdate(idPago, req.body, { new: true });
+    return res.json(updatedPago);
+  } catch (error) {
+    console.error("Error al actualizar pago:", error);
+    return res.status(500).json({ error: "Error al actualizar pago" });
+  }
+};

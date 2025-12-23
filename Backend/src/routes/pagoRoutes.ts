@@ -9,5 +9,6 @@ const router = express.Router();
 router.post('/', authenticateToken, authorizeRoles(['admin']), createPago);
 router.get('/:idAlumno', authenticateToken, authorizeRoles(['admin']), getPagosByAlumno);
 router.delete('/:idPago', authenticateToken, authorizeRoles(['admin']), deletePago);
+router.put('/:idPago', authenticateToken, authorizeRoles(['admin']), updatePago);
 
 export default router;
