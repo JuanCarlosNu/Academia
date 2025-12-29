@@ -1,5 +1,5 @@
 import express from "express";
-import { createPago, deletePago, getPagosByAlumno } from "../controllers/pagoController";
+import { createPago, deletePago, getPagosByAlumno, updatePago } from "../controllers/pagoController";
 import { authenticateToken, authorizeRoles } from "../middleware/authMiddleware";
 
 const router = express.Router();

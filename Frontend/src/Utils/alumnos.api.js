@@ -12,6 +12,8 @@ export const getAlumnoById = (id) => api.get(`/alumnos/${id}`);
 export const createAlumno = (data) => api.post("/alumnos", data);
 export const updateAlumno = (id, data) => api.put(`/alumnos/${id}`, data);
 export const patchAlumno = (id, data) => api.patch(`/alumnos/${id}`, data);
+export const deleteAlumno = (id) => api.delete(`/alumnos/${id}`);
 export const updateClasesRestantes = (id, delta) =>
   api.patch(`/alumnos/${id}/clases`, { delta });
-export const deleteAlumno = (id) => api.delete(`/alumnos/${id}`);
+export const getClasesRestantes = (id) =>
+  api.get(`/alumnos/${id}/clases-restantes`);
