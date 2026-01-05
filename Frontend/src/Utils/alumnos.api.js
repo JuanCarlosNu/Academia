@@ -17,3 +17,5 @@ export const updateClasesRestantes = (id, delta) =>
   api.patch(`/alumnos/${id}/clases`, { delta });
 export const getClasesRestantes = (id) =>
   api.get(`/alumnos/${id}/clases-restantes`);
+export const getPagosByAlumno = (id) => api.get(`/pagos/${id}`);
+export const createPago = (pagoData) => api.post("/pagos", pagoData);
