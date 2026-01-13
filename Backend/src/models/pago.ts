@@ -21,7 +21,7 @@ const PagoSchema = new mongoose.Schema({
   },
   metodo_pago: {
     type: String,
-    enum: ['efectivo', 'transferencia', 'mercadopago'],
+    enum: ['efectivo', 'transferencia', 'tarjeta'],
     required: true,
   },
   alumno: {
