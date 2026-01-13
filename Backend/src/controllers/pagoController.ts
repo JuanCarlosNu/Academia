@@ -53,3 +53,13 @@ export const updatePago = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error al actualizar pago" });
   }
 };
+export const getAllPagos = async (req: Request, res: Response) => {
+  try {
+    // Trae todos los pagos y hace populate para mostrar datos del alumno
+    const pagos = await Pago.find().populate("alumno").sort({ fecha: -1 });
+    return res.status(200).json(pagos);
+  } catch (error) {
+    console.error("Error al obtener todos los pagos:", error);
+    return res.status(500).json({ error: "Error al obtener todos los pagos" });
+  }
+};
