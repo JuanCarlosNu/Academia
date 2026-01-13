@@ -47,7 +47,7 @@
       const clases = await Clase.find()
         .populate('profesor')
         .populate('circuito')
-        .populate('alumno');
+        .populate('alumno', 'nombre apellido');
       res.status(200).json(clases);
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener las clases', error });
@@ -70,10 +70,12 @@
       if (!desde || !hasta) {
         return res.status(400).json({ error: 'Faltan parámetros desde y hasta' });
       }
+  // Query para obtener las clases en el rango de fechas
 
       const clasesPorSemana = await Clase.find({
   fecha: { $gte: desde, $lte: hasta }
 })
+  // De lo encontrado, solo traer estos campos de las referencias
   .populate({ path: 'alumno', select: 'nombre apellido' })
   .populate({ path: 'circuito', select: 'nombre' })
   .populate({ path: 'profesor', select: 'nombre' }) as ClasePoblada[];
@@ -108,7 +110,7 @@
        alumnoName: c.alumno?.nombre || null,
      circuitoId: c.circuito?._id || null, //aca pedía _id pero lo cambié.
         circuit: typeof c.circuito === 'object' ? c.circuito.nombre : 'Sin circuito',
-        student: c.alumno ? `${c.alumno.nombre}` : 'Sin alumno',
+        student: c.alumno ? `${c.alumno.nombre} ${c.alumno.apellido}` : 'Sin alumno',
         estado: c.estado,
         profesor: c.profesor?.nombre || "sin nombre",
         profesorId: c.profesor?._id,
