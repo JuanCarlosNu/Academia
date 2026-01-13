@@ -126,7 +126,7 @@ function CreateModal({
           <option value="">Seleccione un alumno</option>
           {alumnos.map((alumno) => (
             <option key={alumno._id} value={alumno._id}>
-              {alumno.nombre}
+              {alumno.nombre} {alumno.apellido}
             </option>
           ))}
         </select>
