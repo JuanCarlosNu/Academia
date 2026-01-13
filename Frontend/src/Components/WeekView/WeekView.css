@@ -40,6 +40,7 @@
 .row-mini {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-top: 1px solid #eee;
   padding-top: .4rem;
   margin-top: .4rem;

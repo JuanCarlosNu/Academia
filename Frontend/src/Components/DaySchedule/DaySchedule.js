@@ -14,6 +14,13 @@ function DaySchedule({
   setClasesSeleccionadas = () => {},
 }) {
   console.log("DaySchedule received classes:", classes);
+  // 🔹 Función para abreviar circuitos
+  const abreviarCircuito = (circuit) => {
+    if (!circuit) return "";
+    const match = circuit.match(/\d+/); // busca el número dentro del string
+    return match ? `C${match[0]}` : circuit; // devuelve C + número
+  };
+
   return (
     <div className={`day-schedule ${activeRange}`}>
       {/* Mapea todos los horarios del día y detecta si tienen clases*/}
@@ -75,7 +82,7 @@ function DaySchedule({
                   <span>{clase.student}</span>
                 </div>
                 <div className="row-mini-right">
-                  <span>{clase.circuit}</span>
+                  <span>{abreviarCircuito(clase.circuit)}</span>
                   <span>
                     {" "}
                     {clase.estado === "completada" ? "✅" : " "}

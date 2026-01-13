@@ -226,7 +226,7 @@ function Clases() {
       ? "Clases del mes:"
       : "Clases del día:";
 
-  /* ★ cargar clases del mes Actual al iniciar */
+  /* ★ cargar clases del mes Actual cuando la vista es mes */
 
   useEffect(() => {
     if (activeRange !== "mes") return;
