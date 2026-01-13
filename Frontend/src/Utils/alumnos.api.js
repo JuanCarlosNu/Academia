@@ -19,3 +19,6 @@ export const getClasesRestantes = (id) =>
   api.get(`/alumnos/${id}/clases-restantes`);
 export const getPagosByAlumno = (id) => api.get(`/pagos/${id}`);
 export const createPago = (pagoData) => api.post("/pagos", pagoData);
+export const getPagos = () => api.get("/pagos");
+export const updatePago = (id, data) => api.put(`/pagos/${id}`, data);
+export const deletePago = (id) => api.delete(`/pagos/${id}`);

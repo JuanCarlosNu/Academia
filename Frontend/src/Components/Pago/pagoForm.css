@@ -1,0 +1,127 @@
+/*.pago-form {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+.regPago {
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;        
+  margin-bottom: 15px;
+}
+
+.form-row label {
+  flex: 1;         
+  display: flex;
+  flex-direction: column; 
+}
+
+.pago-form button {
+  background-color: #2196f3;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}*/
+/* Contenedor principal: formulario en línea */
+.pago-form.inline-form {
+  display: flex;
+  align-items: flex-end; /* ✅ Alinea el botón con los inputs */
+  gap: 14px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+/* Cada grupo de input */
+.inline-form .form-group {
+  display: flex;
+  flex-direction: column;
+  width: 180px; /* ✅ Campos más cortos y equilibrados */
+}
+
+/* Labels con tipografía mejorada */
+.inline-form .form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+  font-family: "Inter", "Roboto", sans-serif; /* ✅ Tipografía moderna */
+}
+
+
+/* Inputs */
+.inline-form .form-group input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.inline-form .form-group select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Focus */
+.inline-form .form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.35);
+}
+
+/* Errores */
+.inline-form .input-error {
+  border-color: #d9534f !important;
+}
+
+.inline-form .error-msg {
+  color: #d9534f;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+/* ✅ Botón estilizado y coherente con los inputs */
+.inline-form .btn-submit {
+  padding: 9px 16px;
+  background: #0275d8; /* ✅ Color más profesional */
+  color: white;
+  border: none;
+  border-radius: 6px; /* ✅ Igual curvatura que los inputs */
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  height: 38px; /* ✅ Igual altura visual que los inputs */
+}
+
+/* Hover */
+.inline-form .btn-submit:hover:not(:disabled) {
+  background: #025aa5;
+  transform: translateY(-1px);
+}
+
+/* Disabled */
+.inline-form .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .pago-form.inline-form {
+    flex-wrap: wrap;
+  }
+}

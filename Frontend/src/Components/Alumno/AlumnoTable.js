@@ -5,7 +5,7 @@ import { useAuth } from "../../Context/AuthContext";
 import { getClasesRestantes } from "../../Utils/alumnos.api";
 import AlumnoPagos from "./AlumnoPagos";
 import PagoForm from "../Pago/pagoForm";
-
+import { createPago } from "../../Utils/alumnos.api";
 const AlumnoRow = ({
   alumno,
   onEdit,
@@ -122,8 +122,13 @@ export default function AlumnoTable({
               Cerrar
             </button>
             <PagoForm
+              mode="alumno"
               alumnoId={selectedAlumno._id}
-              onSuccess={() => setRefreshKey(Date.now())} // 👈 fuerza refresco
+              onSuccess={async (payload) => {
+                await createPago(payload); // 👈 ahora sí se crea en backend
+                setRefreshKey(Date.now()); // refresca historial y clases restantes
+              }}
+              // 👈 fuerza refresco
             />
             <AlumnoPagos
               alumnoId={selectedAlumno._id}
