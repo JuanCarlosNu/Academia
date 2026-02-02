@@ -38,8 +38,8 @@ function EditModal({ clase, onClose, onSave, currentDate }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>Editar Clase</h3>
-        <form onSubmit={handleSubmit}>
+        <h3 className="editModal-h3">Editar Clase</h3>
+        <form className="editModal-form" onSubmit={handleSubmit}>
           <label>
             Fecha:
             <input

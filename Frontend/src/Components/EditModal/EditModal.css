@@ -23,3 +23,12 @@
   justify-content: space-between;
   margin-top: 15px;
 }
+.editModal-form{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;  
+}
+.editModal-h3{
+  padding: 10px;
+  background-color: rgb(188, 234, 188);
+}

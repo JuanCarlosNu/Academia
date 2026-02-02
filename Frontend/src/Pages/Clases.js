@@ -86,7 +86,7 @@ function Clases() {
     return clasesSemana.map((dia) => ({
       ...dia,
       classes: dia.classes.map((c) =>
-        c.id === claseEditada.id ? claseEditada : c
+        c.id === claseEditada.id ? claseEditada : c,
       ),
     }));
   };
@@ -116,11 +116,11 @@ function Clases() {
       };
 
       setClassesOfWeek((prev) =>
-        actualizarSemanaTrasEdicion(claseNormalizada, prev)
+        actualizarSemanaTrasEdicion(claseNormalizada, prev),
       );
 
       setClassesOfDay((prev) =>
-        actualizarDiaTrasEdicion(claseNormalizada, prev)
+        actualizarDiaTrasEdicion(claseNormalizada, prev),
       );
 
       console.log("Clase actualizada:", claseNormalizada);
@@ -201,7 +201,7 @@ function Clases() {
     const prev = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() - 1,
-      1
+      1,
     );
     setCurrentDate(prev);
     setActiveRange("mes");
@@ -211,7 +211,7 @@ function Clases() {
     const next = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() + 1,
-      1
+      1,
     );
     setCurrentDate(next);
     setActiveRange("mes");
@@ -223,8 +223,8 @@ function Clases() {
     activeRange === "semana"
       ? "Semana de:"
       : activeRange === "mes"
-      ? "Clases del mes:"
-      : "Clases del día:";
+        ? "Clases del mes:"
+        : "Clases del día:";
 
   /* ★ cargar clases del mes Actual cuando la vista es mes */
 
@@ -354,7 +354,7 @@ function Clases() {
     const diaActual = classesOfWeek.find(
       (d) =>
         d.date.toISOString().split("T")[0] ===
-        currentDate.toISOString().split("T")[0]
+        currentDate.toISOString().split("T")[0],
     );
 
     if (diaActual) {
