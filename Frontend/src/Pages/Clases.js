@@ -34,6 +34,7 @@ function Clases() {
   const [claseNueva, setClaseNueva] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [profesores, setProfesores] = useState([]);
 
   const getClasesByRange = async (startISO, endISO, token) => {
     const res = await axios.get(`${API_URL}/api/clases`, {
@@ -226,6 +227,19 @@ function Clases() {
         ? "Clases del mes:"
         : "Clases del día:";
 
+  /* ★ cargar profesores */
+  useEffect(() => {
+    const fetchProfesores = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/api/profesores`);
+        setProfesores(res.data);
+      } catch (error) {
+        console.error("Error al obtener profesores", error);
+      }
+    };
+    fetchProfesores();
+  }, []);
+
   /* ★ cargar clases del mes Actual cuando la vista es mes */
 
   useEffect(() => {
@@ -398,6 +412,7 @@ function Clases() {
         <DayView
           activeRange={activeRange}
           classes={classesOfDay}
+          profesores={profesores}
           onEdit={handleEdit}
           onCancel={handleCancel}
           onCrearClase={handleCrearClase}

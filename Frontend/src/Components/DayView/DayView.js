@@ -7,6 +7,7 @@ import "./DayView.css";
 
 function DayView({
   classes,
+  profesores,
   onEdit,
   onCancel,
   onCrearClase,
@@ -22,16 +23,35 @@ function DayView({
   const { cantidadOcupadas, cantidadDisponibles } = useHorarios(
     classes,
     "día",
-    HORARIOS_DEL_DIA
+    HORARIOS_DEL_DIA,
   );
-  const filteredClasses = classes.filter(({ clase }) => {
-    if (!clase) return true; // mostrar espacios libres
-    const coincideProfesor =
-      !filtroProfesor || clase.profesor === filtroProfesor;
-    const coincideCircuito =
-      !filtroCircuito || clase.circuit === filtroCircuito;
-    return coincideProfesor && coincideCircuito;
-  });
+  // Generar espacios libres para todos los horarios
+  const generarEspaciosLibres = () =>
+    HORARIOS_DEL_DIA.map((hora) => ({
+      hora,
+      clase: null,
+    }));
+
+  // Filtrado de clases
+  const filteredClasses = (() => {
+    if (!filtroProfesor && !filtroCircuito) return classes;
+
+    const clasesFiltradas = classes.filter(({ clase }) => {
+      if (!clase) return true; // mostrar espacios libres
+      const coincideProfesor =
+        !filtroProfesor || clase.profesor === filtroProfesor;
+      const coincideCircuito =
+        !filtroCircuito || clase.circuit === filtroCircuito;
+      return coincideProfesor && coincideCircuito;
+    });
+
+    // Si se filtró por profesor y no tiene clases → devolver todos libres
+    if (filtroProfesor && clasesFiltradas.length === 0) {
+      return generarEspaciosLibres();
+    }
+
+    return clasesFiltradas;
+  })();
 
   //mapea cada clase y muestra alumno circuito y hora, depués de filtrar
   //además muestra botones/editar
@@ -47,13 +67,11 @@ function DayView({
           onChange={(e) => setFiltroProfesor(e.target.value)}
         >
           <option value="">Todos</option>
-          {[...new Set(classes.map((c) => c.clase?.profesor))] // nombres únicos
-            .filter(Boolean)
-            .map((nombre) => (
-              <option key={nombre} value={nombre}>
-                {nombre}
-              </option>
-            ))}
+          {profesores.map((p) => (
+            <option key={p._id} value={p.nombre}>
+              {p.nombre}
+            </option>
+          ))}
         </select>
         <label>Filtrar por circuito:</label>
 
@@ -96,7 +114,7 @@ function DayView({
           <button
             onClick={() => {
               const confirmar = window.confirm(
-                `¿Seguro que desea cancelar ${clasesSeleccionadas.length} clases?`
+                `¿Seguro que desea cancelar ${clasesSeleccionadas.length} clases?`,
               );
               if (!confirmar) return;
 
