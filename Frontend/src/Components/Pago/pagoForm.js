@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import "./pagoForm.css";
 
 export default function PagoForm({
-  mode = "alumno",
-  alumnoId,
-  alumnos = [],
+  mode = "alumno", // por defecto es alumno, pero si se pasa "global" muestra el select de alumnos
+  alumnoId, // sera seteado en el select del form si el modo es global, sino viene dado por props
+  alumnos = [], // lista de alumnos para el select en modo "global"
   onSuccess,
 }) {
   const [selectedAlumno, setSelectedAlumno] = useState(alumnoId || "");
   const [monto, setMonto] = useState("");
   const [metodoPago, setMetodoPago] = useState("efectivo");
+  0;
   const [cantidadClases, setCantidadClases] = useState("");
 
   const handleSubmit = (e) => {
@@ -23,7 +24,7 @@ export default function PagoForm({
       cantidad_clases_pagadas: cantidadClases,
     };
 
-    onSuccess(payload);
+    onSuccess(payload); // envía los datos al componente padre para que lo maneje handleCreatePago
 
     // reset (en modo global también vaciamos el select)
     setMonto("");
@@ -34,9 +35,12 @@ export default function PagoForm({
   return (
     <>
       <h4 className="regPago">
-        {mode === "global"
-          ? "Registrar pago (global)"
-          : "Registrar pago del alumno"}
+        {/* Título dinámico según el modo */}
+        {
+          mode === "global"
+            ? "Registrar pago (global)" /// en pagina "pagos"
+            : "Registrar pago del alumno" /// en pagina "alumnos" dentro del perfil de cada alumno
+        }
       </h4>
       <form onSubmit={handleSubmit} className="pago-form inline-form">
         {mode === "global" && (

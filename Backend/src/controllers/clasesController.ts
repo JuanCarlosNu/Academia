@@ -194,7 +194,7 @@
   }
 };
 
-export const getProximaClaseDeAlumno = async (req: Request, res: Response) => {
+  export const getProximaClaseDeAlumno = async (req: Request, res: Response) => {
   try {
     const { idAlumno } = req.params;
 

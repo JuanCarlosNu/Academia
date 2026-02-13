@@ -4,7 +4,7 @@ export default function PagoEditForm({ pago, onSave, onCancel }) {
   const [monto, setMonto] = useState(pago.monto);
   const [metodoPago, setMetodoPago] = useState(pago.metodo_pago);
   const [cantidadClases, setCantidadClases] = useState(
-    pago.cantidad_clases_pagadas
+    pago.cantidad_clases_pagadas,
   );
 
   const handleSubmit = (e) => {
